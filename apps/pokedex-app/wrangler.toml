@@ -1,0 +1,10 @@
+name = "lettuce-pokedex"
+account_id = "110dbe86941559e3a86b73e6f2e7a324"
+
+main = "./.svelte-kit/.cloudflare/worker.js"
+site.bucket = "./.svelte-kit/.cloudflare/public"
+
+build.command = "pnpm build"
+
+compatibility_date = "2021-11-12"
+workers_dev = true
