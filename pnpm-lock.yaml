@@ -17,6 +17,15 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20230914.0
         version: 4.20231121.0
+      itty-fetcher:
+        specifier: ^0.9.4
+        version: 0.9.4
+      schemas:
+        specifier: workspace:*
+        version: link:../../packages/schemas
+      valibot:
+        specifier: ^0.21.0
+        version: 0.21.0
       wrangler:
         specifier: ^3.15.0
         version: 3.17.0
@@ -47,12 +56,18 @@ importers:
       eslint-plugin-svelte:
         specifier: ^2.30.0
         version: 2.35.1(eslint@8.54.0)(svelte@4.2.7)
+      itty-fetcher:
+        specifier: ^0.9.4
+        version: 0.9.4
       prettier:
         specifier: ^3.0.0
         version: 3.1.0
       prettier-plugin-svelte:
         specifier: ^3.0.0
         version: 3.1.1(prettier@3.1.0)(svelte@4.2.7)
+      schemas:
+        specifier: workspace:*
+        version: link:../../packages/schemas
       svelte:
         specifier: ^4.0.5
         version: 4.2.7
@@ -65,12 +80,25 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.3.2
+      valibot:
+        specifier: ^0.21.0
+        version: 0.21.0
       vite:
         specifier: ^4.4.2
         version: 4.5.0
       wrangler:
         specifier: ^3.15.0
         version: 3.17.0
+
+  packages/schemas:
+    dependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.3.2
+    devDependencies:
+      valibot:
+        specifier: ^0.21.0
+        version: 0.21.0
 
 packages:
 
@@ -1638,6 +1666,10 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /itty-fetcher@0.9.4:
+    resolution: {integrity: sha512-o5YpTmov46EbzTrrVpeR9sRK3itWa32VsV9Fv04CzzDm1ZvAXG0RoOGjT9ECOwyipheNf4eLTkstfbRtG8Epgg==}
+    dev: true
+
   /js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
@@ -2375,7 +2407,6 @@ packages:
     resolution: {integrity: sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
@@ -2396,6 +2427,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
+
+  /valibot@0.21.0:
+    resolution: {integrity: sha512-XnzpX93b1vQL7CB3fHlhpLg7OutYpc3ke8SKOvp7IXgicRfTdP/w8+bf0DjhVsySq6YdF4Opld05mj6bTobo9g==}
     dev: true
 
   /vite@4.5.0:

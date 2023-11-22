@@ -1,0 +1,19 @@
+{
+  "name": "schemas",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "valibot": "^0.21.0"
+  },
+  "dependencies": {
+    "typescript": "^5.0.0"
+  }
+}
