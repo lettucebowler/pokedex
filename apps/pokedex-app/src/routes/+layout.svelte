@@ -2,8 +2,10 @@
 	import '../app.css';
 </script>
 
-<div class="mx-auto flex w-full max-w-screen-xl flex-auto flex-col p-1 flex-col gap-1">
-	<h1 class="font-medium text-xl">Lettuce Pokedex</h1>
+<div class="mx-auto flex w-full max-w-screen-xl flex-auto flex-col flex-col gap-4">
+	<nav class="py-4 text-center">
+		<a href="/"><span class="font-medium text-4xl">Lettuce Pokedex</span></a>
+	</nav>
 	<slot />
 </div>
 
