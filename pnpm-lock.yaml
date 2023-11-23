@@ -99,6 +99,28 @@ importers:
         specifier: ^3.17.1
         version: 3.17.1
 
+  apps/test:
+    dependencies:
+      hono:
+        specifier: ^3.10.2
+        version: 3.10.2
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20230914.0
+        version: 4.20231121.0
+      '@hono/vite-cloudflare-pages':
+        specifier: ^0.1.0
+        version: 0.1.1(hono@3.10.2)
+      '@hono/vite-dev-server':
+        specifier: ^0.2.0
+        version: 0.2.0
+      vite:
+        specifier: ^4.5.0
+        version: 4.5.0
+      wrangler:
+        specifier: ^3.15.0
+        version: 3.17.1
+
   packages/schemas:
     dependencies:
       typescript:
@@ -836,6 +858,32 @@ packages:
   /@fastify/busboy@2.1.0:
     resolution: {integrity: sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==}
     engines: {node: '>=14'}
+    dev: true
+
+  /@hono/node-server@1.2.3:
+    resolution: {integrity: sha512-IH2lpqgSSLt9sIhWBE6FivFj+0RglCNYVuBT39vkumfjqjHAwQnx7KJw9WDVNlyH+AJY0N5ImZgcIbfM5xgyBw==}
+    engines: {node: '>=18.14.1'}
+    dev: true
+
+  /@hono/vite-cloudflare-pages@0.1.1(hono@3.10.2):
+    resolution: {integrity: sha512-DNetzOcfEUQ+j2rG4SUGv9BUKrWj60edqXigItsS6TU84sb6d5dzJu+qJLKohG1XjPEZ4KXEKrVT0H1iTKJEaA==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: '*'
+    dependencies:
+      hono: 3.10.2
+    dev: true
+
+  /@hono/vite-dev-server@0.2.0:
+    resolution: {integrity: sha512-et3hGd6Zz5has+EvwHtp6kPOsht1V1pCLIP6DHJDm7bVIG34W2MxehOpk8gRIq0ZdSCiKDUiYCjq9cEQzwOdDA==}
+    engines: {node: '>=18.14.1'}
+    dependencies:
+      '@hono/node-server': 1.2.3
+      miniflare: 3.20231030.1
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
     dev: true
 
   /@humanwhocodes/config-array@0.11.13:
@@ -2013,7 +2061,6 @@ packages:
   /hono@3.10.2:
     resolution: {integrity: sha512-QwJLjWs3e+nZ3b5nQrrdJpYCJqiTK744jeYhX7yhZdxwcQ3KIohBfzI2dA8gSF6HEZkmFUdiKL1BelJ8utIm4w==}
     engines: {node: '>=16.0.0'}
-    dev: false
 
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
@@ -2635,6 +2682,14 @@ packages:
       estree-walker: 0.6.1
     dev: true
 
+  /rollup@3.29.4:
+    resolution: {integrity: sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==}
+    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
   /rollup@4.5.1:
     resolution: {integrity: sha512-0EQribZoPKpb5z1NW/QYm3XSR//Xr8BeEXU49Lc/mQmpmVVG5jPUVrpc2iptup/0WMrY9mzas0fxH+TjYvG2CA==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
@@ -3074,6 +3129,41 @@ packages:
 
   /valibot@0.21.0:
     resolution: {integrity: sha512-XnzpX93b1vQL7CB3fHlhpLg7OutYpc3ke8SKOvp7IXgicRfTdP/w8+bf0DjhVsySq6YdF4Opld05mj6bTobo9g==}
+    dev: true
+
+  /vite@4.5.0:
+    resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      esbuild: 0.18.20
+      postcss: 8.4.31
+      rollup: 3.29.4
+    optionalDependencies:
+      fsevents: 2.3.3
     dev: true
 
   /vite@5.0.2:

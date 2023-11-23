@@ -1,7 +1,2 @@
 name = "pokedex-api"
-compatibility_date = "2023-01-01"
-
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "my-database"
-# database_id = ""
+compatibility_date = "2023-11-22"
