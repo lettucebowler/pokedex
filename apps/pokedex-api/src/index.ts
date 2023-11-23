@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cache } from 'hono/cache';
 import { fetcher } from 'itty-fetcher';
-import { object, array, number, nullable, string, safeParse, transform, flatten } from 'valibot';
+import { safeParse, flatten } from 'valibot';
 import { getSpeciesResponseSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 
 const pokeAPi = fetcher({
@@ -36,7 +36,6 @@ app.get('/v1/species/:species', async (c) => {
 	const data = await pokeAPi.get('/pokemon-species/' + species);
 	const speciesData = safeParse(speciesInfoSchema, data);
 	if (!speciesData.success) {
-		console.log(flatten(speciesData.issues));
 		c.status(500);
 		return c.json({
 			message: 'invalid data from pokeapi'
@@ -50,7 +49,6 @@ app.get('/v1/variants/:variant', async (c) => {
 	const data = await pokeAPi.get(`/pokemon/${variant}`);
 	const variantInfo = safeParse(variantInfoSchema, data);
 	if (!variantInfo.success) {
-		console.log(flatten(variantInfo.issues));
 		c.status(500);
 		return c.json({
 			message: 'invalid data from pokeapi'
