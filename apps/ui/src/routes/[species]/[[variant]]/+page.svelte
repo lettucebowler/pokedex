@@ -10,19 +10,19 @@
 	<title>{capitalize(data.variant.name || 'Lettuce Pokedex')}</title>
 </svelte:head>
 <div
-	class="p-1 bg-[--color-primary-type-200] border-2 border-[--color-secondary-type-300] rounded-[1.375rem] mb-auto"
+	class="mb-auto rounded-[1.375rem] border-2 border-[--color-secondary-type-300] bg-[--color-primary-type-200] p-1"
 >
-	<div class="p-2 bg-[--color-primary-type-100] rounded-2xl">
+	<div class="rounded-2xl bg-[--color-primary-type-100] p-2">
 		<img
 			src={data.variant.image}
 			alt={data.variant.name}
-			class="aspect-square w-full sm:w-[320px] md:w-[400px] lg:w-[475px] bg-white rounded-t-lg"
+			class="aspect-square w-full rounded-t-lg bg-white sm:w-[320px] md:w-[400px] lg:w-[475px]"
 		/>
-		<div class="flex justify-around pb-1 px-1 bg-white rounded-b-lg">
+		<div class="flex justify-around rounded-b-lg bg-white px-1 pb-1">
 			{#each data.variant.types as type, i (type)}
 				<div
 					class={cx(
-						'font-medium text-base text-white p-2 w-full flex-1 text-center',
+						'w-full flex-1 p-2 text-center text-base font-medium text-white',
 						i === 0 ? 'rounded-l bg-[--color-primary-type-200]' : 'bg-[--color-secondary-type-200]',
 						(i === 1 || data.variant.types.length == 1) && 'rounded-r'
 					)}

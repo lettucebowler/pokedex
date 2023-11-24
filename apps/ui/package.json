@@ -9,7 +9,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
+		"format": "prettier --write . --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss",
 		"ship": "wrangler deploy"
 	},
 	"devDependencies": {
@@ -27,6 +27,7 @@
 		"postcss": "^8.4.31",
 		"prettier": "^3.1.0",
 		"prettier-plugin-svelte": "^3.1.2",
+		"prettier-plugin-tailwindcss": "^0.5.7",
 		"schemas": "workspace:*",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.1",

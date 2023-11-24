@@ -32,40 +32,40 @@
 		id="title-block"
 		class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] bg-[--color-primary-type-200] p-1"
 	>
-		<div class="flex gap-2 bg-[--color-primary-type-100] p-2 rounded-2xl">
+		<div class="flex gap-2 rounded-2xl bg-[--color-primary-type-100] p-2">
 			<a
 				href="/"
-				class="bg-white p-1 rounded-lg text-center grid items-center font-medium capitalize text-xl px-4 flex-1"
+				class="grid flex-1 items-center rounded-lg bg-white p-1 px-4 text-center text-xl font-medium capitalize"
 				>Lettuce Pokedex</a
 			>
-			<div class="bg-white p-1 rounded-lg flex-[3_0_max-content] text-center">
+			<div class="flex-[3_0_max-content] rounded-lg bg-white p-1 text-center">
 				<h1 class="inline text-2xl font-medium capitalize">{data.species.name}</h1>
 				<p class="text-sm text-gray-800">
-					<span class="sm:hidden text-sm font-medium text-center text-gray-800">
+					<span class="text-center text-sm font-medium text-gray-800 sm:hidden">
 						#{leftPad(4, data.species.pokedexNumber)}</span
 					>
 					{data.species.genus}
 				</p>
 			</div>
 			<span
-				class="hidden sm:flex font-medium text-xl bg-white p-1 flex-col justify-center flex-[1_0_max-content] text-center rounded-lg"
+				class="hidden flex-[1_0_max-content] flex-col justify-center rounded-lg bg-white p-1 text-center text-xl font-medium sm:flex"
 				>#{leftPad(4, data.species.pokedexNumber)}</span
 			>
 		</div>
 	</div>
 
-	<div class="grid grid-cols-1 sm:grid-cols-[max-content,_1fr] gap-4">
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-[max-content,_1fr]">
 		<slot />
 
 		<div id="info-block" class="flex flex-col gap-2">
 			{#if data.species.variants.length && data.species.variants.length > 1}
 				<div
 					id="variant-block"
-					class="border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200] rounded-[1.375rem]"
+					class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] bg-[--color-primary-type-200] p-1"
 				>
-					<div class="bg-white p-2 border-8 border-[--color-primary-type-100] rounded-2xl">
-						<h3 class="text-xl font-medium capitalize text-center">Variants</h3>
-						<nav class="flex gap-2 justify-center flex-wrap">
+					<div class="rounded-2xl border-8 border-[--color-primary-type-100] bg-white p-2">
+						<h3 class="text-center text-xl font-medium capitalize">Variants</h3>
+						<nav class="flex flex-wrap justify-center gap-2">
 							{#each data.species.variants as variant}
 								<a
 									href={variant.name === data.species.name
@@ -73,11 +73,11 @@
 										: `/${data.species.name}/${variant.name
 												.replace(data.species.name, '')
 												.slice(1)}`}
-									class="text-center flex flex-col items-center gap-1"
+									class="flex flex-col items-center gap-1 text-center"
 								>
 									<figure class="max-w-[96px]">
 										<img
-											class="min-h-[96px] aspect-square"
+											class="pixelated aspect-square min-h-[96px]"
 											src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${variant.pokemonId}.png`}
 											alt={variant.name
 												.replace(data.species.name, '')
@@ -85,7 +85,7 @@
 												.split('-')
 												.join(' ')}
 										/>
-										<figcaption class="font-medium text-sm first-letter:capitalize">
+										<figcaption class="text-sm font-medium first-letter:capitalize">
 											{variant.name.replaceAll('-', ' ')}
 										</figcaption>
 									</figure>
@@ -97,24 +97,24 @@
 			{/if}
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
 			<div
-				class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200]"
+				class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] bg-[--color-primary-type-200] p-1"
 			>
-				<div class="bg-[--color-primary-type-100] p-2 rounded-2xl space-y-2">
-					<div class="rounded-lg p-4 bg-white space-y-2">
+				<div class="space-y-2 rounded-2xl bg-[--color-primary-type-100] p-2">
+					<div class="space-y-2 rounded-lg bg-white p-4">
 						<h3 class="text-center text-xl font-medium capitalize">description</h3>
 						{#each data.species.flavorText as flavor (flavor)}
 							<p>{flavor}</p>
 						{/each}
 					</div>
-					<div class="rounded-lg p-4 bg-white space-y-2 @container">
+					<div class="space-y-2 rounded-lg bg-white p-4 @container">
 						<h3 class="text-center text-xl font-medium capitalize">biology</h3>
 						<dl
-							class="grid gap-x-4 gap-y-2 grid-cols-[repeat(2,_max-content)] @sm:grid-cols-[repeat(3,_max-content)] max-w-[max-content] mx-auto"
+							class="mx-auto grid max-w-[max-content] grid-cols-[repeat(2,_max-content)] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(3,_max-content)]"
 						>
 							{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }].filter((item) => item.value) as item (item)}
 								<span>
 									<dt class="inline text-sm capitalize">{item.label}:</dt>
-									<dd class="inline text-sm capitalize font-bold">{item.value}</dd>
+									<dd class="inline text-sm font-bold capitalize">{item.value}</dd>
 								</span>
 							{/each}
 						</dl>

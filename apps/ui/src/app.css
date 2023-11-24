@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.pixelated {
+		image-rendering: pixelated;
+	}
+}
+
 :root {
 	--color-default-100: #ed9c88;
 	--color-default-200: #d1421e;
