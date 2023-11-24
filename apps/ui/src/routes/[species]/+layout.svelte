@@ -40,10 +40,12 @@
 			>
 			<div class="bg-white p-1 rounded-lg flex-[3_0_max-content] text-center">
 				<h1 class="inline text-2xl font-medium capitalize">{data.species.name}</h1>
-				<span class="sm:hidden text-lg text-center text-gray-800"
-					>#{leftPad(4, data.species.pokedexNumber)}</span
-				>
-				<p class="text-sm text-gray-800">{data.species.genus}</p>
+				<p class="text-sm text-gray-800">
+					<span class="sm:hidden text-sm font-medium text-center text-gray-800">
+						#{leftPad(4, data.species.pokedexNumber)}</span
+					>
+					{data.species.genus}
+				</p>
 			</div>
 			<span
 				class="hidden sm:flex font-medium text-xl bg-white p-1 flex-col justify-center flex-[1_0_max-content] text-center rounded-lg"
@@ -55,7 +57,44 @@
 	<div class="grid grid-cols-1 sm:grid-cols-[max-content,_1fr] gap-4">
 		<slot />
 
-		<div id="info-block">
+		<div id="info-block" class="flex flex-col gap-2">
+			{#if data.species.variants.length && data.species.variants.length > 1}
+				<div
+					class="border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200] rounded-[1.375rem]"
+				>
+					<div class="bg-white p-2 border-8 border-[--color-primary-type-100] rounded-2xl">
+						<h3 class="text-lg font-medium capitalize text-center">Variants</h3>
+						<nav class="flex gap-2 justify-center flex-wrap">
+							{#each data.species.variants as variant}
+								<a
+									href={variant.name === data.species.name
+										? `/${data.species.name}`
+										: `/${data.species.name}/${variant.name
+												.replace(data.species.name, '')
+												.slice(1)}`}
+									class="text-center flex flex-col items-center gap-1"
+								>
+									<figure class="max-w-[96px]">
+										<img
+											class="min-h-[96px] aspect-square"
+											src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${variant.pokemonId}.png`}
+											alt={variant.name
+												.replace(data.species.name, '')
+												.slice(1)
+												.split('-')
+												.join(' ')}
+										/>
+										<figcaption class="font-medium text-sm first-letter:capitalize">
+											{variant.name.replaceAll('-', ' ')}
+										</figcaption>
+									</figure>
+								</a>
+							{/each}
+						</nav>
+					</div>
+				</div>
+			{/if}
+			<h2 class="text-center text-2xl font-medium">Species Info</h2>
 			<dl class="grid grid-cols-[max-content,_1fr] gap-x-2 gap-y-1">
 				{#each [{ label: 'genus', value: data.species.genus }, { label: 'habitat', value: data.species.habitat }].filter((item) => item.value) as item (item)}
 					<dt class="font-bold text-sm capitalize">{item.label}:</dt>
@@ -67,30 +106,6 @@
 					<p>{flavor}</p>
 				{/each}
 			</div>
-			{#if data.species.variants.length && data.species.variants.length > 1}
-				<h3 class="text-lg font-medium capitalize text-center">Variants</h3>
-				<nav class="flex gap-2 justify-center">
-					{#each data.species.variants as variant}
-						<a
-							href={variant.name === data.species.name
-								? `/${data.species.name}`
-								: `/${data.species.name}/${variant.name.replace(data.species.name, '').slice(1)}`}
-							class="text-center flex flex-col items-center gap-1"
-						>
-							<figure class="max-w-[96px]">
-								<img
-									class="min-h-[96px] aspect-square"
-									src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${variant.pokemonId}.png`}
-									alt={variant.name.replace(data.species.name, '').slice(1).split('-').join(' ')}
-								/>
-								<figcaption class="font-medium text-sm">
-									{variant.name.replaceAll('-', ' ')}
-								</figcaption>
-							</figure>
-						</a>
-					{/each}
-				</nav>
-			{/if}
 		</div>
 	</div>
 </div>
