@@ -7,13 +7,13 @@
 	}
 </script>
 
-<div>
-	<div class="border-red-500 border-4 rounded-xl p-1 gap-1 bg-red-300 flex">
+<div class="rounded-[22px] border border-default-300 bg-default-200 p-1">
+	<div class="flex gap-2 bg-default-100 p-2 rounded-2xl">
 		<span
-			class="font-medium text-xl bg-white p-1 rounded flex flex-col justify-center flex-[1_0_max-content] text-center"
+			class="font-medium text-xl bg-white p-1 flex flex-col justify-center flex-[1_0_max-content] text-center rounded-lg"
 			>#{leftPad(4, data.species.pokedexNumber)}</span
 		>
-		<div class="bg-white p-1 rounded flex-[3_0_max-content] text-center">
+		<div class="bg-white p-1 rounded-lg flex-[3_0_max-content] text-center">
 			<h1 class="inline text-2xl font-medium capitalize">{data.species.name}</h1>
 			<p class="text-sm text-gray-800">{data.species.genus}</p>
 		</div>
