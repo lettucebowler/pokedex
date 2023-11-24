@@ -100,20 +100,22 @@
 				class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200]"
 			>
 				<div class="bg-[--color-primary-type-100] p-2 rounded-2xl space-y-2">
-					<div class="rounded-lg p-2 bg-white space-y-2">
+					<div class="rounded-lg p-4 bg-white space-y-2">
 						<h3 class="text-center text-xl font-medium capitalize">description</h3>
 						{#each data.species.flavorText as flavor (flavor)}
 							<p>{flavor}</p>
 						{/each}
 					</div>
-					<div class="rounded-lg p-2 bg-white space-y-2">
+					<div class="rounded-lg p-4 bg-white space-y-2 @container">
 						<h3 class="text-center text-xl font-medium capitalize">biology</h3>
 						<dl
-							class="grid gap-x-4 gap-y-2 grid-cols-[repeat(2,_max-content_1fr)] max-w-[max-content] mx-auto"
+							class="grid gap-x-4 gap-y-2 grid-cols-[repeat(2,_max-content)] @sm:grid-cols-[repeat(3,_max-content)] max-w-[max-content] mx-auto"
 						>
-							{#each [{ label: 'genus', value: data.species.genus }, { label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }].filter((item) => item.value) as item (item)}
-								<dt class="inline font-bold text-sm capitalize">{item.label}:</dt>
-								<dd class="inline text-sm">{item.value}</dd>
+							{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }].filter((item) => item.value) as item (item)}
+								<span>
+									<dt class="inline text-sm capitalize">{item.label}:</dt>
+									<dd class="inline text-sm capitalize font-bold">{item.value}</dd>
+								</span>
 							{/each}
 						</dl>
 					</div>
