@@ -1,13 +1,28 @@
 <script lang="ts">
 	import '../app.css';
+
+	import { page } from '$app/stores';
+
+	const getVars = (types: string[]) => {
+		let workingTypes = [...types];
+		if (workingTypes.length === 1) {
+			workingTypes = [...types, ...types];
+		}
+		return [
+			`--color-primary-type-100: var(--color-${workingTypes.at(0)}-100)`,
+			`--color-primary-type-200: var(--color-${workingTypes.at(0)}-200)`,
+			`--color-primary-type-300: var(--color-${workingTypes.at(0)}-300)`,
+			`--color-secondary-type-100: var(--color-${workingTypes.at(1)}-100)`,
+			`--color-secondary-type-200: var(--color-${workingTypes.at(1)}-200)`,
+			`--color-secondary-type-300: var(--color-${workingTypes.at(1)}-300)`
+		].join('; ');
+	};
 </script>
 
-<div class="mx-auto flex w-full max-w-screen-xl flex-auto flex-col flex-col gap-4 px-1 pb-1">
-	<div class="border-b border-x border-default-300 rounded-b-2xl bg-default-200 px-1 pb-1">
-		<nav class="py-4 text-center bg-default-100 rounded-b-xl">
-			<a href="/"><span class="font-medium text-4xl">Lettuce Pokedex</span></a>
-		</nav>
-	</div>
+<div
+	class="mx-auto flex w-full max-w-screen-xl flex-auto flex-col flex-col gap-4 p-1"
+	style={getVars($page.data.variant.types)}
+>
 	<slot />
 </div>
 

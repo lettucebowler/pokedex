@@ -2,19 +2,20 @@
 	export let data;
 </script>
 
-<h1 class="text-2xl font-medium pb-2">Pokemon by national dex order</h1>
+<h1 class="text-3xl font-medium text-center">Pokemon by national dex order</h1>
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
 	{#each data.species as species, i (species)}
 		<a href={`${species.name}`}>
-			<figure class="flex flex-col items-center bg-red-500 p-1 rounded-lg font-bold text-lg gap-1">
+			<figure class="flex flex-col items-center font-bold text-lg hover:bg-gray-200 p-1 rounded-xl">
 				<img
-					class="bg-red-300 rounded-md w-full px-auto min-h-[92px] sm:h-[192px] pixelated"
+					class="h-[96px] w-[96px] sm:h-[192px] sm:w-[192px]"
 					src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${species.id}.png`}
 					alt={species.name}
 					loading={i < 30 ? 'eager' : 'lazy'}
 				/>
-				<figcaption class="bg-white w-full rounded-md p-1 text-center capitalize">
-					{species.name}
+				<figcaption class="text-center capitalize">
+					<div class="font-medium text-base">{species.name}</div>
+					<div class="text-sm text-gray-700">#{i + 1}</div>
 				</figcaption>
 			</figure>
 		</a>

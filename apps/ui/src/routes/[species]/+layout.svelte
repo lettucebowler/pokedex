@@ -7,16 +7,23 @@
 	}
 </script>
 
-<div class="rounded-[22px] border border-default-300 bg-default-200 p-1">
-	<div class="flex gap-2 bg-default-100 p-2 rounded-2xl">
-		<span
-			class="font-medium text-xl bg-white p-1 flex flex-col justify-center flex-[1_0_max-content] text-center rounded-lg"
-			>#{leftPad(4, data.species.pokedexNumber)}</span
+<div
+	class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] bg-[--color-primary-type-200] p-1"
+>
+	<div class="flex gap-2 bg-[--color-primary-type-100] p-2 rounded-2xl">
+		<a
+			href="/"
+			class="bg-white p-1 rounded-lg text-center grid items-center font-medium capitalize text-xl px-4 flex-[1_0_max-content]"
+			>Lettuce Pokedex</a
 		>
 		<div class="bg-white p-1 rounded-lg flex-[3_0_max-content] text-center">
 			<h1 class="inline text-2xl font-medium capitalize">{data.species.name}</h1>
 			<p class="text-sm text-gray-800">{data.species.genus}</p>
 		</div>
+		<span
+			class="hidden sm:flex font-medium text-xl bg-white p-1 flex-col justify-center flex-[1_0_max-content] text-center rounded-lg"
+			>#{leftPad(4, data.species.pokedexNumber)}</span
+		>
 	</div>
 </div>
 

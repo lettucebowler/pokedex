@@ -6,99 +6,99 @@ export default {
 				transparent: 'transparent',
 				white: 'white',
 				default: {
-					100: '#ed9c88',
-					200: '#d1421e',
-					300: '#8b2c14'
+					100: 'var(--color-default-100)',
+					200: 'var(--color-default-200)',
+					300: 'var(--color-default-300)'
 				},
 				normal: {
-					100: '#c6c6a7',
-					100: '#6d6d4e',
-					300: '#a8a878'
+					100: 'var(--color-normal-100)',
+					200: 'var(--color-normal-200)',
+					300: 'var(--color-normal-300)'
 				},
 				fighting: {
-					200: '#c03028',
-					100: '#7d1f1a',
-					300: '#d67873'
+					200: 'var(--color-fighting-100)',
+					100: 'var(--color-fighting-200)',
+					300: 'var(--color-fighting-300)'
 				},
 				flying: {
-					100: '#6d5e9c',
-					300: '#c6b7f5',
-					200: '#a890f0'
+					100: 'var(--color-flying-100)',
+					300: 'var(--color-flying-200)',
+					200: 'var(--color-flying-300)'
 				},
 				poison: {
-					200: '#a040a0',
-					100: '#682a68',
-					300: '#c183c1'
+					200: 'var(--color-poison-100)',
+					100: 'var(--color-poison-200)',
+					300: 'var(--color-poison-300)'
 				},
 				ground: {
-					200: '#e0c068',
-					100: '#927d44',
-					300: '#ebd69d'
+					200: 'var(--color-ground-100)',
+					100: 'var(--color-ground-200)',
+					300: 'var(--color-ground-300)'
 				},
 				rock: {
-					200: '#b8a038',
-					100: '#786824',
-					300: '#d1c17d'
+					200: 'var(--color-rock-100)',
+					100: 'var(--color-rock-200)',
+					300: 'var(--color-rock-300)'
 				},
 				bug: {
-					200: '#a8b820',
-					100: '#6d7815',
-					300: '#c6d16e'
+					200: 'var(--color-bug-100)',
+					100: 'var(--color-bug-200)',
+					300: 'var(--color-bug-300)'
 				},
 				ghost: {
-					100: '#493963',
-					200: '#705898',
-					300: '#a292bc'
+					100: 'var(--color-ghost-100)',
+					200: 'var(--color-ghost-200)',
+					300: 'var(--color-ghost-300)'
 				},
 				steel: {
-					100: '#787887',
-					200: '#b8b8d0',
-					300: '#d1d1e0'
+					100: 'var(--color-steel-100)',
+					200: 'var(--color-steel-200)',
+					300: 'var(--color-steel-300)'
 				},
 				fire: {
-					100: '#9c531f',
-					200: '#f08030',
-					300: '#f5ac78'
+					100: 'var(--color-fire-100)',
+					200: 'var(--color-fire-200)',
+					300: 'var(--color-fire-300)'
 				},
 				water: {
-					100: '#455f9f',
-					200: '#6890f0',
-					300: '#9db7f5'
+					100: 'var(--color-water-100)',
+					200: 'var(--color-water-200)',
+					300: 'var(--color-water-300)'
 				},
 				grass: {
-					100: '#4e8234',
-					200: '#78c850',
-					300: '#a7db8d'
+					100: 'var(--color-grass-100)',
+					200: 'var(--color-grass-200)',
+					300: 'var(--color-grass-300)'
 				},
 				electric: {
-					100: '#a1871f',
-					200: '#f8d030',
-					300: '#fae078'
+					100: 'var(--color-electric-100)',
+					200: 'var(--color-electric-200)',
+					300: 'var(--color-electric-300)'
 				},
 				psychic: {
-					100: '#a13959',
-					200: '#f85888',
-					300: '#fa92b2'
+					100: 'var(--color-psychic-100)',
+					200: 'var(--color-psychic-200)',
+					300: 'var(--color-psychic-300)'
 				},
 				ice: {
-					100: '#638d8d',
-					200: '#98d8d8',
-					300: '#bce6e6'
+					100: 'var(--color-ice-100)',
+					200: 'var(--color-ice-200)',
+					300: 'var(--color-ice-300)'
 				},
 				dragon: {
-					100: '#4924a1',
-					200: '#7038f8',
-					300: '#a27dfa'
+					100: 'var(--color-dragon-100)',
+					200: 'var(--color-dragon-200)',
+					300: 'var(--color-dragon-300)'
 				},
 				dark: {
-					100: '#49392f',
-					200: '#705848',
-					300: '#a29288'
+					100: 'var(--color-dark-100)',
+					200: 'var(--color-dark-200)',
+					300: 'var(--color-dark-300)'
 				},
 				fairy: {
-					100: '#9b6470',
-					200: '#ee99ac',
-					300: '#f4bdc9'
+					100: 'var(--color-fairy-100)',
+					200: 'var(--color-fairy-200)',
+					300: 'var(--color-fairy-300)'
 				}
 			}
 		}

@@ -8,7 +8,7 @@ export const load = async (event) => {
 		fetch: event.fetch,
 		base: POKEDEX_API_HOST
 	});
-	const getSpeciesResponse = await api.get<SpeciesCollection>('/v1/species', { limit: 60 });
+	const getSpeciesResponse = await api.get<SpeciesCollection>('/v1/species', { limit: 1017 });
 	return {
 		species: getSpeciesResponse.results
 	};

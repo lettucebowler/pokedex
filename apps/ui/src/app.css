@@ -1,3 +1,81 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--color-default-100: #ed9c88;
+	--color-default-200: #d1421e;
+	--color-default-300: #8b2c14;
+
+	--color-normal-100: #c6c6a7;
+	--color-normal-200: #a8a878;
+	--color-normal-300: #6d6d4e;
+
+	--color-fighting-100: #d67873;
+	--color-fighting-200: #c03028;
+	--color-fighting-300: #7d1f1a;
+
+	--color-flying-100: #c6b7f5;
+	--color-flying-200: #a890f0;
+	--color-flying-300: #6d5e9c;
+
+	--color-poison-100: #c183c1;
+	--color-poison-200: #a040a0;
+	--color-poison-300: #682a68;
+
+	--color-ground-100: #ebd69d;
+	--color-ground-200: #e0c068;
+	--color-ground-300: #927d44;
+
+	--color-rock-100: #d1c17d;
+	--color-rock-200: #b8a038;
+	--color-rock-300: #786824;
+
+	--color-bug-100: #c6d16e;
+	--color-bug-200: #a8b820;
+	--color-bug-300: #6d7815;
+
+	--color-ghost-100: #a292bc;
+	--color-ghost-200: #705898;
+	--color-ghost-300: #493963;
+
+	--color-steel-100: #d1d1e0;
+	--color-steel-200: #b8b8d0;
+	--color-steel-300: #787887;
+
+	--color-fire-100: #f5ac78;
+	--color-fire-200: #f08030;
+	--color-fire-300: #9c531f;
+
+	--color-water-100: #9db7f5;
+	--color-water-200: #6890f0;
+	--color-water-300: #455f9f;
+
+	--color-grass-100: #a7db8d;
+	--color-grass-200: #78c850;
+	--color-grass-300: #4e8234;
+
+	--color-electric-100: #fae078;
+	--color-electric-200: #f8d030;
+	--color-electric-300: #a1871f;
+
+	--color-psychic-100: #fa92b2;
+	--color-psychic-200: #f85888;
+	--color-psychic-300: #a13959;
+
+	--color-ice-100: #bce6e6;
+	--color-ice-200: #98d8d8;
+	--color-ice-300: #638d8d;
+
+	--color-dragon-100: #a27dfa;
+	--color-dragon-200: #7038f8;
+	--color-dragon-300: #4924a1;
+
+	--color-dark-100: #a29288;
+	--color-dark-200: #705848;
+	--color-dark-300: #49392f;
+
+	--color-fairy-100: #f4bdc9;
+	--color-fairy-200: #ee99ac;
+	--color-fairy-300: #9b6470;
+}

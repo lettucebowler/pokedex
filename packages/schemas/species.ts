@@ -69,7 +69,7 @@ const pokeApiVariantInfoSchema = object({
   id: number(),
   name: string(),
   sprites: object({
-    front_default: string([url()]),
+    front_default: nullable(string([url()])),
     other: object({
       'official-artwork': object({
         front_default: nullable(string([url()])),
