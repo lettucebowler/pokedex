@@ -24,7 +24,7 @@
 					class={cx(
 						'font-medium text-base text-white p-2 w-full flex-1 text-center',
 						i === 0 ? 'rounded-l bg-[--color-primary-type-200]' : 'bg-[--color-secondary-type-200]',
-						i === 1 || (data.variant.types.length == 1 && 'rounded-r')
+						(i === 1 || data.variant.types.length == 1) && 'rounded-r'
 					)}
 				>
 					{type}
