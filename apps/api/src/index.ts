@@ -13,7 +13,7 @@ const app = new Hono();
 app.get(
 	'*',
 	cache({
-		cacheName: 'lettuce-pokedex-cache-bleh',
+		cacheName: 'lettuce-pokedex-cache',
 		cacheControl: 'max-age=3600'
 	})
 );

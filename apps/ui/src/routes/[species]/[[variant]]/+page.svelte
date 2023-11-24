@@ -1,23 +1,13 @@
 <script lang="ts">
-	import type { VariantInfo } from 'schemas/species.js';
-
 	export let data;
-	function getDataItems(variant: VariantInfo) {
-		return [
-			{
-				label: 'variant',
-				value: variant.name
-			}
-		];
-	}
 </script>
 
-<div class="rounded-xl bg-red-300 border-4 border-red-500 p-1">
-	<div class="rounded bg-white p-1 flex flex-col gap-2 items-center">
-		<img
-			src={data.variant.image}
-			alt={data.variant.name}
-			class="w-full aspect-square max-w-[475px]"
-		/>
-	</div>
+<div
+	class="p-1 bg-[--color-primary-type-200] border-2 border-[--color-secondary-type-300] rounded-[1.375rem]"
+>
+	<img
+		src={data.variant.image}
+		alt={data.variant.name}
+		class="aspect-square w-[475px] bg-white border-8 border-[--color-primary-type-100] rounded-2xl"
+	/>
 </div>
