@@ -60,10 +60,11 @@
 		<div id="info-block" class="flex flex-col gap-2">
 			{#if data.species.variants.length && data.species.variants.length > 1}
 				<div
+					id="variant-block"
 					class="border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200] rounded-[1.375rem]"
 				>
 					<div class="bg-white p-2 border-8 border-[--color-primary-type-100] rounded-2xl">
-						<h3 class="text-lg font-medium capitalize text-center">Variants</h3>
+						<h3 class="text-xl font-medium capitalize text-center">Variants</h3>
 						<nav class="flex gap-2 justify-center flex-wrap">
 							{#each data.species.variants as variant}
 								<a
@@ -95,16 +96,28 @@
 				</div>
 			{/if}
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
-			<dl class="grid grid-cols-[max-content,_1fr] gap-x-2 gap-y-1">
-				{#each [{ label: 'genus', value: data.species.genus }, { label: 'habitat', value: data.species.habitat }].filter((item) => item.value) as item (item)}
-					<dt class="font-bold text-sm capitalize">{item.label}:</dt>
-					<dd class="text-sm">{item.value}</dd>
-				{/each}
-			</dl>
-			<div class="space-y-2">
-				{#each data.species.flavorText as flavor (flavor)}
-					<p>{flavor}</p>
-				{/each}
+			<div
+				class="rounded-[1.375rem] border-2 border-[--color-secondary-type-300] p-1 bg-[--color-primary-type-200]"
+			>
+				<div class="bg-[--color-primary-type-100] p-2 rounded-2xl space-y-2">
+					<div class="rounded-lg p-2 bg-white space-y-2">
+						<h3 class="text-center text-xl font-medium capitalize">description</h3>
+						{#each data.species.flavorText as flavor (flavor)}
+							<p>{flavor}</p>
+						{/each}
+					</div>
+					<div class="rounded-lg p-2 bg-white space-y-2">
+						<h3 class="text-center text-xl font-medium capitalize">biology</h3>
+						<dl
+							class="grid gap-x-4 gap-y-2 grid-cols-[repeat(2,_max-content_1fr)] max-w-[max-content] mx-auto"
+						>
+							{#each [{ label: 'genus', value: data.species.genus }, { label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }].filter((item) => item.value) as item (item)}
+								<dt class="inline font-bold text-sm capitalize">{item.label}:</dt>
+								<dd class="inline text-sm">{item.value}</dd>
+							{/each}
+						</dl>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

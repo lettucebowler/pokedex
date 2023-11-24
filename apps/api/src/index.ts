@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cache } from 'hono/cache';
 import { fetcher } from 'itty-fetcher';
-import { safeParse, flatten } from 'valibot';
+import { safeParse } from 'valibot';
 import { getSpeciesResponseSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 
 const pokeAPi = fetcher({

@@ -50,6 +50,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
+      classix:
+        specifier: ^2.1.35
+        version: 2.1.35
       eslint:
         specifier: ^8.54.0
         version: 8.54.0
@@ -1444,6 +1447,10 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /classix@2.1.35:
+    resolution: {integrity: sha512-YRI5UjBq9Aspfnj6ZyCobyeye3EDAanCpBWqXhNH9bVloKC6Ejnz+K4pWu/qMSaJRJEtLgmfvkIRk5zbQqj2PA==}
     dev: true
 
   /code-red@1.0.4:

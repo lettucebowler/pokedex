@@ -2,6 +2,9 @@
 	export let data;
 </script>
 
+<svelte:head>
+	<title>Lettuce Pokedex</title>
+</svelte:head>
 <h1 class="text-3xl font-medium text-center">Pokemon by national dex order</h1>
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
 	{#each data.species as species, i (species)}

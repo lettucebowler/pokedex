@@ -86,7 +86,7 @@ const pokeApiVariantInfoSchema = object({
 export const variantInfoSchema = transform(pokeApiVariantInfoSchema, (input) => {
   return {
     height: input.height / 10,
-    weight: input.height / 10,
+    weight: input.weight / 10,
     variantId: input.id,
     name: input.name,
     image: input.sprites.other['official-artwork'].front_default ? input.sprites.other['official-artwork'].front_default : input.sprites.front_default,
