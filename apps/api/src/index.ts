@@ -79,20 +79,9 @@ app.get('/v1/species/:species/variants/:variant', async (c) => {
 			message: 'not found'
 		});
 	}
-	const data = await pokeAPi.get(`/pokemon/${species}-${variant}`);
-	const variantInfo = safeParse(variantInfoSchema, data);
-	if (!variantInfo.success) {
-		c.status(500);
-		return c.json({
-			message: 'invalid data from pokeapi'
-		});
-	}
-	return c.json(variantInfo.output);
-});
-
-app.get('/v1/variants/:variant', async (c) => {
-	const { variant } = c.req.param();
-	const data = await pokeAPi.get(`/pokemon/${variant}`);
+	const data = await pokeAPi.get(
+		`/pokemon/${[species, variant === 'default' ? '' : variant].filter(Boolean).join('-')}`
+	);
 	const variantInfo = safeParse(variantInfoSchema, data);
 	if (!variantInfo.success) {
 		c.status(500);
