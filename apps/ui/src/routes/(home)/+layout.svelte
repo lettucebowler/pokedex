@@ -1,6 +1,13 @@
-<div class="mb-2 rounded-[1.375rem] border-2 border-default-300 bg-default-200 p-1">
-	<nav class="flex justify-center gap-2 rounded-2xl border-8 border-default-100 bg-white p-2">
-		<a href="/"><span class="text-4xl font-medium">Lettuce Pokedex</span></a>
-	</nav>
-</div>
+<script>
+	import TypeBox from '$lib/components/TypeBox.svelte';
+	import WhiteBox from '$lib/components/WhiteBox.svelte';
+</script>
+
+<TypeBox>
+	<WhiteBox>
+		<nav class="flex justify-center gap-2">
+			<a href="/"><span class="text-4xl font-medium">Lettuce Pokedex</span></a>
+		</nav>
+	</WhiteBox>
+</TypeBox>
 <slot />

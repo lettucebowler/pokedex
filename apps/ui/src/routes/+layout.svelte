@@ -2,7 +2,7 @@
 	import '../app.css';
 </script>
 
-<div class="mx-auto w-full max-w-screen-xl p-1">
+<div class="mx-auto w-full max-w-screen-xl space-y-2 p-1">
 	<slot />
 </div>
 

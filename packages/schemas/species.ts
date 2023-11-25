@@ -51,7 +51,7 @@ export const speciesInfoSchema = transform(pokeApiSpeciesInfoSchema, (input) => 
     name: input.name,
     speciesId: input.id,
     genus: input.genera.filter((genus) => genus.language.name === 'en').at(0)?.genus ?? 'Pokemon',
-    flavorText: [input.flavor_text_entries.filter((flavor_text) => flavor_text.language.name === 'en').at(-1)?.flavor_text ?? '', ...input.form_descriptions.filter((description) => description.language.name === 'en').map((description) => description.description)],
+    flavorText: [input.flavor_text_entries.filter((flavor_text) => flavor_text.language.name === 'en').at(-1)?.flavor_text ?? '', ...input.form_descriptions.filter((description) => description.language.name === 'en').map((description) => description.description)].filter(Boolean),
     habitat: input?.habitat?.name ?? null,
     pokedexNumber: input.pokedex_numbers.filter((entry) => entry.pokedex.name === 'national').at(0)?.entry_number ?? 1,
     variants: input.varieties.filter((variant) => !variant.pokemon.name.includes('totem')).map((variant) => ({ default: variant.is_default, name: variant.pokemon.name, pokemonId: Number(variant.pokemon.url.split('/').at(-2))}))
