@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
+	import FallbackImage from './FallbackImage.svelte';
 
 	const getVars = (types?: string[]) => {
 		if (!types) {
@@ -115,7 +116,7 @@
 									class="flex flex-col items-center gap-1 text-center"
 								>
 									<figure class="max-w-[96px] hover:underline">
-										<img
+										<FallbackImage
 											class="pixelated aspect-square min-h-[96px]"
 											src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${variant.pokemonId}.png`}
 											alt={variant.name
@@ -123,6 +124,7 @@
 												.slice(1)
 												.split('-')
 												.join(' ')}
+											fallback={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.species.speciesId}.png`}
 										/>
 										<figcaption class="text-sm font-medium first-letter:capitalize">
 											{variant.name.replaceAll('-', ' ')}
