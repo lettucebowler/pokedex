@@ -14,11 +14,9 @@ export const load = async (event) => {
 		variant = `${species.name}-${variant}`;
 	}
 	const data = await api.get<VariantInfo>(`/v1/variants/${variant}`);
-	if (event.isDataRequest) {
-		event.setHeaders({
-			'cache-control': 'public, max-age=3153600'
-		});
-	}
+	event.setHeaders({
+		'cache-control': 'public, max-age=3153600'
+	});
 	return {
 		variant: data
 	};

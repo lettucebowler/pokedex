@@ -1012,7 +1012,10 @@ export const pokedexByName = new Map([
 	['dipplin', 1011],
 	['poltchageist', 1012],
 	['sinistcha', 1013],
-	['okidogi', 1014]
+	['okidogi', 1014],
+	['munkidori', 1015],
+	['fezandipiti', 1016],
+	['ogerpon', 1017]
 ]);
 
 export const pokedexById = new Map(

@@ -11,13 +11,13 @@ const pokeAPi = fetcher({
 
 const app = new Hono();
 
-// app.get(
-// 	'*',
-// 	cache({
-// 		cacheName: 'lettuce-pokedex-cache',
-// 		cacheControl: 'max-age=3600'
-// 	})
-// );
+app.get(
+	'*',
+	cache({
+		cacheName: 'lettuce-pokedex-cache',
+		cacheControl: 'max-age=3600'
+	})
+);
 
 app.get('/v1/species', async (c) => {
 	const { limit = pokedexByName.size, offset = 0 } = c.req.query();

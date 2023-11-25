@@ -73,7 +73,10 @@ const pokeApiVariantInfoSchema = object({
     other: object({
       'official-artwork': object({
         front_default: nullable(string([url()])),
-      })
+      }),
+      home: object({
+        front_default: nullable(string([url()])),
+      }),
     })
   }),
   types: array(object({
@@ -89,7 +92,7 @@ export const variantInfoSchema = transform(pokeApiVariantInfoSchema, (input) => 
     weight: input.weight / 10,
     variantId: input.id,
     name: input.name,
-    image: input.sprites.other['official-artwork'].front_default ? input.sprites.other['official-artwork'].front_default : input.sprites.front_default,
+    image: input.sprites.other['official-artwork'].front_default ?? input.sprites.other.home.front_default ?? input.sprites.front_default,
     forms: input.forms.map((form) => {
       return {
         name: form.name,
