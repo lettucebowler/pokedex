@@ -55,25 +55,29 @@
 	<div id="nav-block">
 		<nav class="flex justify-between">
 			{#each [data.links.previous, data.links.next] as navItem, i (navItem)}
-				<a
-					href="/species/{navItem.name}"
-					class="flex items-center justify-between rounded-lg p-1 text-center hover:bg-gray-200"
-					data-after="→"
-					data-before="←"
-					class:before:content-[attr(data-after)]={i == 1}
-					class:after:content-[attr(data-before)]={i == 0}
-				>
-					<figure class="flex w-32 flex-col items-center">
-						<img
-							alt={navItem.name}
-							src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{navItem.id}.png"
-							class="aspect-square h-12 w-12"
-						/>
-						<figcaption class="text-lg font-medium first-letter:capitalize">
-							{navItem.name}
-						</figcaption>
-					</figure>
-				</a>
+				<div class="flex flex items-center gap-2">
+					{#if i === 1}
+						<span>→</span>
+					{/if}
+					<a
+						href="/species/{navItem.name}"
+						class="flex items-center justify-between rounded-lg p-1 text-center hover:underline before:hover:no-underline hover:after:no-underline"
+					>
+						<figure class="flex w-32 flex-col items-center">
+							<img
+								alt={navItem.name}
+								src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{navItem.id}.png"
+								class="aspect-square h-12 w-12"
+							/>
+							<figcaption class="text-lg font-medium first-letter:capitalize">
+								{navItem.name}
+							</figcaption>
+						</figure>
+					</a>
+					{#if i === 0}
+						<span>←</span>
+					{/if}
+				</div>
 			{/each}
 		</nav>
 	</div>

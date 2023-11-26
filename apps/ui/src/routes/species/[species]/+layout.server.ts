@@ -55,9 +55,10 @@ async function getEvolutionChainData(event: LayoutServerLoadEvent, { id }: { id:
 
 export const load = async (event) => {
 	const { species, links } = await getSpeciesData(event);
-
+	const evolutions = await getEvolutionChainData(event, { id: species.evolutionChain });
 	return {
 		species,
-		links
+		links,
+		evolutions
 	};
 };

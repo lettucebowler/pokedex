@@ -1,4 +1,3 @@
-import { createInputFiles } from 'typescript';
 import { Output, array, boolean, integer, literal, null_, nullable, nullish, number, object, string, transform, url } from 'valibot';
 
 export const pokeApiSpeciesListEntrySchema = object({
@@ -40,9 +39,9 @@ export const pokeApiSpeciesInfoSchema = object({
   egg_groups: array(object({
     name: string(),
   })),
-  shape: object({
+  shape: nullable(object({
     name: string(),
-  }),
+  })),
   evolution_chain: object({
     url: string([url()]),
   }),
@@ -71,6 +70,7 @@ const variantsToFilter = [
   'eevee-starter',
   'pikachu-starter',
   'pikachu-world-cap',
+  'zarude-dada',
 ]
 
 function filterVariants(variant: { pokemon: {name: string; }; }) {
@@ -92,7 +92,7 @@ export const speciesInfoSchema = transform(pokeApiSpeciesInfoSchema, (input) => 
     habitat: input?.habitat?.name ?? null,
     pokedexNumber: input.pokedex_numbers.filter((entry) => entry.pokedex.name === 'national').at(0)?.entry_number ?? 1,
     variants: input.varieties.filter(filterVariants).map((variant) => ({ default: variant.is_default, name: variant.pokemon.name, pokemonId: Number(variant.pokemon.url.split('/').at(-2))})),
-    shape: input.shape.name,
+    shape: input.shape?.name ?? null,
     color: input.color.name,
     eggGroups: input.egg_groups.map((egg_group) => egg_group.name),
     evolutionChain: Number(input.evolution_chain.url.split('/').at(-2))
@@ -128,6 +128,7 @@ const pokeApiVariantInfoSchema = object({
 })
 
 export const variantInfoSchema = transform(pokeApiVariantInfoSchema, (input) => {
+  console.log(input.sprites);
   return {
     height: input.height / 10,
     weight: input.weight / 10,
@@ -215,7 +216,7 @@ function transformEvolution(evolution: PokeApiBasicEvolution | PokeApiMiddleEvol
 
 export const evolutionChainInfoSchema = transform(pokeApiEvolutionChainInfoSchema, (input) => {
   return {
-    id: input.chain.id,
+    id: input.id,
     chain: transformEvolution(input.chain),
   };
 });
