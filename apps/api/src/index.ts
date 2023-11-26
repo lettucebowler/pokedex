@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { cache } from 'hono/cache';
 import { fetcher } from 'itty-fetcher';
-import { safeParse } from 'valibot';
-import { speciesInfoSchema, variantInfoSchema } from 'schemas/species';
+import { flatten, safeParse } from 'valibot';
+import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 import { pokedexById, pokedexByName } from './pokedex';
 
 const pokeAPi = fetcher({
@@ -11,13 +11,13 @@ const pokeAPi = fetcher({
 
 const app = new Hono();
 
-app.get(
-	'*',
-	cache({
-		cacheName: 'lettuce-pokedex-cache',
-		cacheControl: 'max-age=3600'
-	})
-);
+// app.get(
+// 	'*',
+// 	cache({
+// 		cacheName: 'lettuce-pokedex-cache',
+// 		cacheControl: 'max-age=3600'
+// 	})
+// );
 
 app.get('/v1/species', async (c) => {
 	const { limit = pokedexByName.size, offset = 0 } = c.req.query();
@@ -90,6 +90,20 @@ app.get('/v1/species/:species/variants/:variant', async (c) => {
 		});
 	}
 	return c.json(variantInfo.output);
+});
+
+app.get('/v1/evolution-chains/:id', async (c) => {
+	const { id } = c.req.param();
+	const data = await pokeAPi.get('/evolution-chain/' + id);
+	const parseResult = safeParse(evolutionChainInfoSchema, data);
+	if (!parseResult.success) {
+		c.status(500);
+		return c.json({
+			message: 'invalid data from pokeapi',
+			errors: parseResult.issues
+		});
+	}
+	return c.json(parseResult.output);
 });
 
 export default app;

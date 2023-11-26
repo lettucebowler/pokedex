@@ -46,7 +46,7 @@
 			</p>
 		</WhiteBox>
 		<WhiteBox class="hidden sm:grid">
-			<div class="grid w-full items-center px-4 text-center text-xl font-medium">
+			<div class="grid w-full items-center px-4 text-center font-mono text-xl font-medium">
 				#{leftPad(4, data.species.pokedexNumber)}
 			</div>
 		</WhiteBox>
@@ -56,7 +56,7 @@
 		<nav class="flex justify-between">
 			{#each [data.links.previous, data.links.next] as navItem, i (navItem)}
 				<a
-					href="/{navItem.name}"
+					href="/species/{navItem.name}"
 					class="flex items-center justify-between rounded-lg p-1 text-center hover:bg-gray-200"
 					data-after="→"
 					data-before="←"
@@ -83,22 +83,22 @@
 		<div id="info-block" class="space-y-4">
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
 			<TypeBox class="space-y-2">
-				<WhiteBox class="space-y-2" padding={4}>
-					<h3 class="text-center text-xl font-medium capitalize">description</h3>
-					{#each data.species.flavorText as flavor (flavor)}
-						<p>{flavor}</p>
-					{/each}
-				</WhiteBox>
+				{#if data.species.flavorText.length}
+					<WhiteBox class="space-y-2" padding={4}>
+						<h3 class="text-center text-xl font-medium capitalize">description</h3>
+						{#each data.species.flavorText as flavor (flavor)}
+							<p>{flavor}</p>
+						{/each}
+					</WhiteBox>
+				{/if}
 				<WhiteBox class="space-y-2 @container" padding={4}>
 					<h3 class="text-center text-xl font-medium capitalize">biology</h3>
 					<dl
-						class="mx-auto grid max-w-[max-content] grid-cols-[repeat(2,_max-content)] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(3,_max-content)]"
+						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(2,_max-content_max-content)] @md:grid-cols-[repeat(3,_max-content_minmax(min-content,_1fr))]"
 					>
-						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }].filter((item) => item.value) as item (item)}
-							<span>
-								<dt class="inline text-sm capitalize">{item.label}:</dt>
-								<dd class="inline text-sm font-bold capitalize">{item.value}</dd>
-							</span>
+						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species?.eggGroups?.join(', ') }].filter((item) => item.value) as item (item)}
+							<dt class="text-sm capitalize">{item.label}:</dt>
+							<dd class="break-normal text-sm font-bold capitalize">{item.value}</dd>
 						{/each}
 					</dl>
 				</WhiteBox>
@@ -110,9 +110,9 @@
 						<nav class="flex flex-wrap justify-center justify-around gap-2">
 							{#each data.species.variants as variant}
 								<a
-									href="/{data.species.name}{variant.name !== data.species.name
-										? '/' + variant.name.replace(data.species.name, '').slice(1)
-										: ''}"
+									href="/species/{data.species.name}{variant.default
+										? ''
+										: '/' + variant.name.replace(data.species.name, '').slice(1)}"
 									class="flex flex-col items-center gap-1 text-center"
 								>
 									<figure class="max-w-[96px] hover:underline">

@@ -23,7 +23,7 @@
 				{#each data.variant.types as type, i (type)}
 					<div
 						class={cx(
-							'w-full flex-1 p-2 text-center text-base font-medium text-white',
+							'w-full flex-1 p-2 text-center text-base font-bold capitalize text-white',
 							i === 0
 								? 'rounded-l bg-[--color-primary-type-200]'
 								: 'bg-[--color-secondary-type-200]',
