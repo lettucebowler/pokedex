@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
+	import Evolution from './Evolution.svelte';
 	import FallbackImage from './FallbackImage.svelte';
 
 	const getVars = (types?: string[]) => {
@@ -88,14 +89,14 @@
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
 			<TypeBox class="space-y-2">
 				{#if data.species.flavorText.length}
-					<WhiteBox class="space-y-2" padding={4}>
+					<WhiteBox class="space-y-2 p-4">
 						<h3 class="text-center text-xl font-medium capitalize">description</h3>
 						{#each data.species.flavorText as flavor (flavor)}
 							<p>{flavor}</p>
 						{/each}
 					</WhiteBox>
 				{/if}
-				<WhiteBox class="space-y-2 @container" padding={4}>
+				<WhiteBox class="space-y-2 p-4 @container">
 					<h3 class="text-center text-xl font-medium capitalize">biology</h3>
 					<dl
 						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(2,_max-content_max-content)] @md:grid-cols-[repeat(3,_max-content_minmax(min-content,_1fr))]"
@@ -109,7 +110,7 @@
 			</TypeBox>
 			{#if data.species.variants.length && data.species.variants.length > 1}
 				<TypeBox class="">
-					<WhiteBox class="space-y-2" padding={4}>
+					<WhiteBox class="space-y-2 p-4">
 						<h3 class="text-center text-xl font-medium capitalize">Variants</h3>
 						<nav class="flex flex-wrap justify-center justify-around gap-2">
 							{#each data.species.variants as variant}
@@ -122,13 +123,14 @@
 									<figure class="max-w-[96px] hover:underline">
 										<FallbackImage
 											class="pixelated aspect-square min-h-[96px]"
-											src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${variant.pokemonId}.png`}
+											src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{variant.pokemonId}.png"
 											alt={variant.name
 												.replace(data.species.name, '')
 												.slice(1)
 												.split('-')
 												.join(' ')}
-											fallback={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.species.speciesId}.png`}
+											fallback="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{data
+												.species.speciesId}.png"
 										/>
 										<figcaption class="text-sm font-medium first-letter:capitalize">
 											{variant.name.replaceAll('-', ' ')}
@@ -140,6 +142,14 @@
 					</WhiteBox>
 				</TypeBox>
 			{/if}
+			<TypeBox>
+				<WhiteBox class="space-y-2 p-4">
+					<h3 class="text-center text-xl font-medium capitalize">Evolution (WIP)</h3>
+					<div class="flex justify-center gap-2">
+						<Evolution evolution={data.evolutions.chain} />
+					</div>
+				</WhiteBox>
+			</TypeBox>
 		</div>
 	</div>
 </div>

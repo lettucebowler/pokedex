@@ -13,7 +13,7 @@
 </svelte:head>
 <div class="mb-auto">
 	<TypeBox>
-		<WhiteBox padding={1}>
+		<WhiteBox class="p-1">
 			<img
 				src={data.variant.image}
 				alt={data.variant.name}

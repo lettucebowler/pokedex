@@ -194,7 +194,7 @@ function isNotFinal(evolution: PokeApiBasicEvolution | PokeApiMiddleEvolution | 
   return false;
 }
 
-type Evolution = {
+export type Evolution = {
   trigger: string;
   species: {
     name: string;
