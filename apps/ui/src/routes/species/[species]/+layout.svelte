@@ -37,7 +37,7 @@
 			<a
 				href="/"
 				class="grid h-full flex-1 items-center rounded-lg bg-white p-1 px-4 text-center text-xl font-medium capitalize"
-				>Lettuce Pokedex</a
+				data-sveltekit-reload>Lettuce Pokedex</a
 			>
 		</WhiteBox>
 		<WhiteBox class="text-center">
@@ -119,6 +119,7 @@
 										? ''
 										: '/' + variant.name.replace(data.species.name, '').slice(1)}"
 									class="flex flex-col items-center gap-1 text-center"
+									data-sveltekit-noscroll
 								>
 									<figure class="max-w-[96px] hover:underline">
 										<FallbackImage
