@@ -16,7 +16,6 @@
 	});
 
 	const handleFallback = () => {
-		console.log('fallback');
 		src = fallback;
 	};
 

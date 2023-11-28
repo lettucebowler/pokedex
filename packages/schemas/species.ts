@@ -128,7 +128,6 @@ const pokeApiVariantInfoSchema = object({
 })
 
 export const variantInfoSchema = transform(pokeApiVariantInfoSchema, (input) => {
-  console.log(input.sprites);
   return {
     height: input.height / 10,
     weight: input.weight / 10,
