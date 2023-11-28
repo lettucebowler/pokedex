@@ -7,12 +7,14 @@ export const load = async (event) => {
 		base: POKEDEX_API_HOST
 	});
 	let { species, variant } = event.params;
-	console.log('get data for', species, variant);
 	const data = await api.get<VariantInfo>(
 		`/v1/species/${species}/variants/${variant ?? 'default'}`
 	);
+	event.setHeaders({
+		'cache-control': 'public, max-age=3153600'
+	});
 	return {
 		variant: data
 	};
 };
-export const prerender = true;
+// export const prerender = true;
