@@ -17,4 +17,4 @@ export const load = async (event) => {
 		variant: data
 	};
 };
-// export const prerender = true;
+export const prerender = true;
