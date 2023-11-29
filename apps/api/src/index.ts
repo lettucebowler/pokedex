@@ -105,48 +105,6 @@ app.get('/v1/species/:species', async (c) => {
 	});
 });
 
-app.get('/v2/species', async (c) => {
-	const { limit, offset } = c.req.query();
-});
-
-app.get('/v2/species/:species', async (c) => {
-	const { species } = c.req.param();
-	try {
-		const speciesData = await getSpecies(c, { species });
-		return c.json(speciesData);
-	} catch (error) {
-		return getErrorMessage(c, { error });
-	}
-});
-
-app.put('/v2/species/:species', async (c) => {
-	const { species } = c.req.param();
-	const body = await c.req.json();
-	const result = await insertSpecies(c, { name: species, ...body });
-	return c.json(result);
-});
-
-app.get('/v2/species/:species/variants', async (c) => {
-	const { species } = c.req.param();
-	return c.json(await getVariants(c, { species }));
-});
-
-app.get('/v2/species/:species/variants/:variant', async (c) => {
-	const { species, variant } = c.req.param();
-	return c.json(await getVariant(c, { species, variant }));
-});
-
-app.put('/v2/species/:species/variants/:variant', async (c) => {
-	const { species, variant } = c.req.param();
-	const body = await c.req.json();
-	return c.json(
-		await insertVariant(c, {
-			name: variant === 'default' ? species : `${species}-${variant}`,
-			...body
-		})
-	);
-});
-
 app.get('/v1/species/:species/variants/:variant', async (c) => {
 	const { species, variant } = c.req.param();
 	if (!pokedexByName.get(species)) {
@@ -187,6 +145,48 @@ app.get('/v1/evolution-chains/:id', async (c) => {
 		});
 	}
 	return c.json(parseResult.output);
+});
+
+app.get('/v2/species', async (c) => {
+	const { limit, offset } = c.req.query();
+});
+
+app.get('/v2/species/:species', async (c) => {
+	const { species } = c.req.param();
+	try {
+		const speciesData = await getSpecies(c, { species });
+		return c.json(speciesData);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
+});
+
+app.put('/v2/species/:species', async (c) => {
+	const { species } = c.req.param();
+	const body = await c.req.json();
+	const result = await insertSpecies(c, { name: species, ...body });
+	return c.json(result);
+});
+
+app.get('/v2/species/:species/variants', async (c) => {
+	const { species } = c.req.param();
+	return c.json(await getVariants(c, { species }));
+});
+
+app.get('/v2/species/:species/variants/:variant', async (c) => {
+	const { species, variant } = c.req.param();
+	return c.json(await getVariant(c, { species, variant }));
+});
+
+app.put('/v2/species/:species/variants/:variant', async (c) => {
+	const { species, variant } = c.req.param();
+	const body = await c.req.json();
+	return c.json(
+		await insertVariant(c, {
+			name: variant === 'default' ? species : `${species}-${variant}`,
+			...body
+		})
+	);
 });
 
 export default app;
