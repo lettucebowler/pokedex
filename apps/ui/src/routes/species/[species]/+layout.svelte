@@ -37,7 +37,7 @@
 			<a
 				href="/"
 				class="grid h-full flex-1 items-center rounded-lg bg-white p-1 px-4 text-center text-xl font-medium capitalize"
-				data-sveltekit-reload>Lettuce Pokedex</a
+				>Lettuce Pokedex</a
 			>
 		</WhiteBox>
 		<WhiteBox class="text-center">
