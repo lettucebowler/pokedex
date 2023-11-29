@@ -1,41 +1,9 @@
 import { Context } from 'hono';
 import type { ApiBindings } from '.';
-import {
-	safeParse,
-	object,
-	string,
-	number,
-	integer,
-	transform,
-	nullable,
-	array,
-	union,
-	literal,
-	Output,
-	url
-} from 'valibot';
+import { safeParse } from 'valibot';
 import { StatusError } from 'itty-fetcher';
 
-const speciesSchema = transform(
-	object({
-		id: number([integer()]),
-		name: string(),
-		genus: string(),
-		habitat: nullable(string()),
-		color: string(),
-		shape: string(),
-		flavor_text: string(),
-		egg_groups: string()
-	}),
-	(input) => {
-		const { egg_groups, ...rest } = input;
-		return {
-			...rest,
-			egg_groups: egg_groups.split(';')
-		};
-	}
-);
-export type Species = Output<typeof speciesSchema>;
+import { speciesSchema } from 'schemas/db/schemas';
 export async function getSpecies(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species }: { species: string }
@@ -63,6 +31,7 @@ export async function getSpecies(
 	return parseResult.output;
 }
 
+import type { Species } from 'schemas/db/schemas';
 export async function insertSpecies(c: Context<{ Bindings: ApiBindings }>, species: Species) {
 	const query = c.env.DB.prepare(
 		'insert into species (id, name, genus, habitat, color, shape, flavor_text, egg_groups) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) on conflict (name) do update set id = ?1, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8 on conflict (id) do update set name = ?2, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8 returning id, name, genus, habitat, color, shape, flavor_text, egg_groups'
@@ -88,32 +57,13 @@ export async function insertSpecies(c: Context<{ Bindings: ApiBindings }>, speci
 	return parseResult.output;
 }
 
-const variantsSchema = transform(
-	array(
-		object({
-			id: number([integer()]),
-			name: string(),
-			is_default: union([literal('N'), literal('Y')])
-		})
-	),
-	(input) => {
-		return {
-			variants: input.map((v) => {
-				return {
-					id: v.id,
-					name: v.name,
-					is_default: v.is_default === 'Y'
-				};
-			})
-		};
-	}
-);
+import { variantsSchema } from 'schemas/db/schemas';
 export async function getVariants(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species }: { species: string }
 ) {
 	const query = c.env.DB.prepare(
-		'select id, name, is_default from variants where species_id in (select id from species where name = ?1)'
+		'select id, name, is_default from variants where species_id in (select id from species where name = ?1) order by id'
 	).bind(species);
 	const data = await query.all();
 	const parseResult = safeParse(variantsSchema, data.results);
@@ -123,41 +73,24 @@ export async function getVariants(
 	return parseResult.output;
 }
 
-const variantSchema = transform(
-	object({
-		id: number([integer()]),
-		name: string(),
-		height: number([integer()]),
-		weight: number([integer()]),
-		image: string([url()]),
-		type_1: string(),
-		type_2: nullable(string()),
-		is_default: union([literal('N'), literal('Y')]),
-		species_id: number([integer()])
-	}),
-	(input) => {
-		const { type_1, type_2, is_default, ...rest } = input;
-		return {
-			...rest,
-			types: [type_1, type_2],
-			is_default: is_default === 'Y'
-		};
-	}
-);
-export type Variant = Output<typeof variantSchema>;
+import { variantSchema } from 'schemas/db/schemas';
 export async function getVariant(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species, variant }: { species: string; variant: string }
 ) {
-	let query = c.env.DB.prepare(
-		'select id, name, height, weight, image, type_1, type_2, is_default, species_id from variants where name = ?1'
-	);
+	let query;
 	if (variant === 'default') {
-		query = query.bind(species);
+		query = c.env.DB.prepare(
+			'select v.id id, v.name name, v.height height, v.weight weight, v.image image, v.type_1 type_1, v.type_2 type_2, v.is_default is_default, v.species_id species_id from variants v inner join species s on s.id = v.species_id where s.name = ?1 and is_default = "Y"'
+		).bind(species);
 	} else {
-		query = query.bind(`${species}-${variant}`);
+		query = c.env.DB.prepare(
+			'select id, name, height, weight, image, type_1, type_2, is_default, species_id from variants where name = ?1'
+		).bind(`${species}-${variant}`);
 	}
-	const data = await query.first();
+	const queryResult = await query.all();
+	// console.log(JSON.stringify(queryResult.meta, null, 2));
+	const [data] = queryResult.results;
 	if (!data) {
 		throw new StatusError(404, 'NOT_FOUND');
 	}
@@ -169,6 +102,7 @@ export async function getVariant(
 	return parseResult.output;
 }
 
+import type { Variant } from 'schemas/db/schemas';
 export async function insertVariant(c: Context<{ Bindings: ApiBindings }>, variant: Variant) {
 	const [type_1, type_2 = null] = variant.types;
 	const query = c.env.DB.prepare(

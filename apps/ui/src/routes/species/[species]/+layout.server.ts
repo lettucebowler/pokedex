@@ -3,7 +3,6 @@ import { fetcher } from 'itty-fetcher';
 import type { EvolutionChain, SpeciesInfo } from 'schemas/species.js';
 import type { LayoutServerLoadEvent } from './$types.js';
 import { error } from '@sveltejs/kit';
-import { StatusError } from 'itty-fetcher';
 
 type navItem = {
 	id: number;
