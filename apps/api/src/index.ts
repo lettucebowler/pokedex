@@ -1,24 +1,56 @@
-import { Hono } from 'hono';
+import { Context, Hono } from 'hono';
 import { cache } from 'hono/cache';
 import { fetcher } from 'itty-fetcher';
 import { safeParse } from 'valibot';
 import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 import { pokedexById, pokedexByName } from './pokedex';
 import { defaultVariants } from './default-variants';
+import { getEggGroups, getFlavorText, getSpecies, getVariants, insertSpecies } from './db';
 
 const pokeAPi = fetcher({
 	base: 'https://pokeapi.co/api/v2'
 });
 
-const app = new Hono();
+export class StatusError extends Error {
+	status: number;
 
-app.get(
-	'*',
-	cache({
-		cacheName: 'pokedex',
-		cacheControl: 'max-age=3600'
-	})
-);
+	constructor(status = 500, message = 'Internal Error.') {
+		super(message);
+		this.status = status;
+	}
+}
+
+function getErrorMessage(c: Context<{ Bindings: ApiBindings }>, { error }: { error: unknown }) {
+	if (error instanceof StatusError) {
+		c.status(error.status);
+		return c.json({
+			message: error.message
+		});
+	}
+	if (error instanceof Error) {
+		c.status(500);
+		return c.json({
+			message: error.message
+		});
+	}
+	c.status(500);
+	return c.json({
+		message: String(error)
+	});
+}
+
+export type ApiBindings = {
+	DB: D1Database;
+};
+const app = new Hono<{ Bindings: ApiBindings }>();
+
+// app.get(
+// 	'*',
+// 	cache({
+// 		cacheName: 'pokedex',
+// 		cacheControl: 'max-age=3600'
+// 	})
+// );
 
 app.get('/v1/species', async (c) => {
 	const { limit = pokedexByName.size, offset = 0 } = c.req.query();
@@ -71,6 +103,39 @@ app.get('/v1/species/:species', async (c) => {
 			}
 		}
 	});
+});
+
+app.get('/v2/species/:species', async (c) => {
+	const { species } = c.req.param();
+	try {
+		const speciesData = await getSpecies(c, { species });
+		return c.json(speciesData);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
+});
+
+app.put('/v2/species/:species', async (c) => {
+	const { species } = c.req.param();
+	const body = await c.req.json();
+	console.log(body);
+	const result = await insertSpecies(c, { species: { name: species, ...body } });
+	return c.json(result);
+});
+
+app.get('/v2/species/:species/flavor-text-entries', async (c) => {
+	const { species } = c.req.param();
+	return c.json(await getFlavorText(c, { species }));
+});
+
+app.get('/v2/species/:species/egg-groups', async (c) => {
+	const { species } = c.req.param();
+	return c.json(await getEggGroups(c, { species }));
+});
+
+app.get('/v2/species/:species/variants', async (c) => {
+	const { species } = c.req.param();
+	return c.json(await getVariants(c, { species }));
 });
 
 app.get('/v1/species/:species/variants/:variant', async (c) => {

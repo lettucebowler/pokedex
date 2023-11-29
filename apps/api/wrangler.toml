@@ -1,2 +1,7 @@
 name = "pokedex-api"
 compatibility_date = "2023-11-22"
+
+[[ d1_databases ]]
+binding = "DB"
+database_name = "pokedex_db_2"
+database_id = "953b943a-f9cd-44d7-a9f5-351c96ca15e2"
