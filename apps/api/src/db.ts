@@ -11,103 +11,73 @@ import {
 	array,
 	union,
 	literal,
-	Output
+	Output,
+	url
 } from 'valibot';
 import { StatusError } from 'itty-fetcher';
 
-const speciesSchema = object({
-	id: number([integer()]),
-	name: string(),
-	genus: string(),
-	habitat: nullable(string()),
-	color: string(),
-	shape: string()
-});
+const speciesSchema = transform(
+	object({
+		id: number([integer()]),
+		name: string(),
+		genus: string(),
+		habitat: nullable(string()),
+		color: string(),
+		shape: string(),
+		flavor_text: string(),
+		egg_groups: string()
+	}),
+	(input) => {
+		const { egg_groups, ...rest } = input;
+		return {
+			...rest,
+			egg_groups: egg_groups.split(';')
+		};
+	}
+);
 type Species = Output<typeof speciesSchema>;
 export async function getSpecies(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species }: { species: string }
 ) {
-	console.log('get species');
 	const query = c.env.DB.prepare(
-		'select id, name, genus, habitat, color, shape from species where name = ?1'
+		`select
+			s.id,
+			s.name,
+			s.genus,
+			s.habitat,
+			s.color,
+			s.shape,
+			s.flavor_text,
+			s.egg_groups
+		from species s where s.name = ?1`
 	).bind(species);
-	const data = await query.all();
-	if (!data.results.length) {
+	const data = await query.first();
+	if (!data) {
 		throw new StatusError(404, 'NOT_FOUND');
 	}
-	const parseResult = safeParse(speciesSchema, data.results.at(0));
+	const parseResult = safeParse(speciesSchema, data);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'invalid data from db');
 	}
 	return parseResult.output;
 }
 
-export async function insertSpecies(
-	c: Context<{ Bindings: ApiBindings }>,
-	{ species }: { species: Species }
-) {
+export async function insertSpecies(c: Context<{ Bindings: ApiBindings }>, species: Species) {
 	const query = c.env.DB.prepare(
-		'insert into species (id, name, genus, habitat, color, shape) values (?1, ?2, ?3, ?4, ?5, ?6)'
-	).bind(species.id, species.name, species.genus, species.habitat, species.color, species.shape);
+		'insert into species (id, name, genus, habitat, color, shape, flavor_text, egg_groups) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) on conflict (name) do update set id = ?1, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8 on conflict (id) do update set name = ?2, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8'
+	).bind(
+		species.id,
+		species.name,
+		species.genus,
+		species.habitat,
+		species.color,
+		species.shape,
+		species.flavor_text,
+		species.egg_groups.join(';')
+	);
 	const result = await query.run();
 	return result;
-}
-
-const flavorTextEntriesSchema = transform(
-	array(
-		object({
-			flavor_text: string()
-		})
-	),
-	(input) => {
-		return {
-			flavor_text_entries: input.map((f) => f.flavor_text)
-		};
-	}
-);
-export async function getFlavorText(
-	c: Context<{ Bindings: ApiBindings }>,
-	{ species }: { species: string }
-) {
-	console.log('get flavor text entries');
-	const query = c.env.DB.prepare(
-		'select flavor_text from species_flavor_text where species_id in (select id from species where name = ?1)'
-	).bind(species);
-	const data = await query.all();
-	const parseResult = safeParse(flavorTextEntriesSchema, data.results);
-	if (!parseResult.success) {
-		throw new Error('invalid data from db');
-	}
-	return parseResult.output;
-}
-
-const eggGroupsSchema = transform(
-	array(
-		object({
-			egg_group: string()
-		})
-	),
-	(input) => {
-		return {
-			egg_groups: input.map((f) => f.egg_group)
-		};
-	}
-);
-export async function getEggGroups(
-	c: Context<{ Bindings: ApiBindings }>,
-	{ species }: { species: string }
-) {
-	console.log('get egg groups');
-	const query = c.env.DB.prepare(
-		'select egg_group from species_egg_groups where species_id in (select id from species where name = ?1)'
-	).bind(species);
-	const data = await query.all();
-	const parseResult = safeParse(eggGroupsSchema, data.results);
-	if (!parseResult.success) {
-		throw new Error('invalid data from db');
-	}
-	return parseResult.output;
 }
 
 const variantsSchema = transform(
@@ -143,4 +113,70 @@ export async function getVariants(
 		throw new Error('invalid data from db');
 	}
 	return parseResult.output;
+}
+
+const variantSchema = transform(
+	object({
+		id: number([integer()]),
+		name: string(),
+		height: number([integer()]),
+		weight: number([integer()]),
+		image: string([url()]),
+		type_1: string(),
+		type_2: string(),
+		default: union([literal('N'), literal('Y')]),
+		species_id: number([integer()])
+	}),
+	(input) => {
+		const { type_1, type_2, default: is_default, ...rest } = input;
+		return {
+			...rest,
+			types: [type_1, type_2],
+			default: is_default === 'Y'
+		};
+	}
+);
+export type Variant = Output<typeof variantSchema>;
+export async function getVariant(
+	c: Context<{ Bindings: ApiBindings }>,
+	{ species, variant }: { species: string; variant: string }
+) {
+	let query;
+	if (variant === 'default') {
+		query = c.env.DB.prepare(
+			'select id, name, height, weight, image, type_1, type_2, "default", species_id from variants where "default" = "Y" and species_id in (select id from species where name = ?1)'
+		).bind(species);
+	} else {
+		query = c.env.DB.prepare(
+			'select id, name, height, weight, image, type_1, type_2, "default", species_id from variants where name = ?1'
+		).bind(`${species}-${variant}`);
+	}
+	const data = await query.first();
+	if (!data) {
+		throw new StatusError(404, 'NOT_FOUND');
+	}
+	const parseResult = safeParse(variantSchema, data);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'invalid data from db');
+	}
+	return parseResult.output;
+}
+
+export async function insertVariant(c: Context<{ Bindings: ApiBindings }>, variant: Variant) {
+	const [type_1, type_2] = variant.types;
+	const query = c.env.DB.prepare(
+		'insert into variants (id, name, height, weight, image, type_1, type_2, species_id, "default") values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9) on conflict(id) do update set name = ?2, height = ?3, weight = ?4, image=?5, type_1=?6, type_2=?7, species_id=?8, "default" = ?9, species_id=?8 on conflict(name) do update set id=?1, height=?3, weight=?4, image=?5, type_1=?6, type_2=?7, species_id=?8, "default" = ?9'
+	).bind(
+		variant.id,
+		variant.name,
+		variant.height,
+		variant.weight,
+		variant.image,
+		type_1,
+		type_2,
+		variant.species_id,
+		variant.default
+	);
+	const result = await query.run();
+	return result;
 }

@@ -5,7 +5,7 @@ import { safeParse } from 'valibot';
 import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 import { pokedexById, pokedexByName } from './pokedex';
 import { defaultVariants } from './default-variants';
-import { getEggGroups, getFlavorText, getSpecies, getVariants, insertSpecies } from './db';
+import { getSpecies, getVariant, getVariants, insertSpecies, insertVariant } from './db';
 
 const pokeAPi = fetcher({
 	base: 'https://pokeapi.co/api/v2'
@@ -118,24 +118,30 @@ app.get('/v2/species/:species', async (c) => {
 app.put('/v2/species/:species', async (c) => {
 	const { species } = c.req.param();
 	const body = await c.req.json();
-	console.log(body);
-	const result = await insertSpecies(c, { species: { name: species, ...body } });
+	const result = await insertSpecies(c, { name: species, ...body });
 	return c.json(result);
-});
-
-app.get('/v2/species/:species/flavor-text-entries', async (c) => {
-	const { species } = c.req.param();
-	return c.json(await getFlavorText(c, { species }));
-});
-
-app.get('/v2/species/:species/egg-groups', async (c) => {
-	const { species } = c.req.param();
-	return c.json(await getEggGroups(c, { species }));
 });
 
 app.get('/v2/species/:species/variants', async (c) => {
 	const { species } = c.req.param();
 	return c.json(await getVariants(c, { species }));
+});
+
+app.get('/v2/species/:species/variants/:variant', async (c) => {
+	const { species, variant } = c.req.param();
+	return c.json(await getVariant(c, { species, variant }));
+});
+
+app.put('/v2/species/:species/variants/:variant', async (c) => {
+	const { species, variant } = c.req.param();
+	const body = await c.req.json();
+	return c.json(
+		await insertVariant(c, {
+			name: variant === 'default' ? species : `${species}-${variant}`,
+			default: variant === 'default' ? 'Y' : 'N',
+			...body
+		})
+	);
 });
 
 app.get('/v1/species/:species/variants/:variant', async (c) => {

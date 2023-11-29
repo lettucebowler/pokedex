@@ -14,13 +14,7 @@ const config = {
 		adapter: adapter({
 			routes: {
 				include: ['/*'],
-				exclude: [
-					"<build>",
-					"<files>",
-					"/",
-					"/__data.json",
-					"/species/*",
-				]
+				exclude: ['<build>', '<files>', '/', '/__data.json', '/species/*']
 			}
 		}),
 		prerender: {
