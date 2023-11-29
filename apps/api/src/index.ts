@@ -105,6 +105,10 @@ app.get('/v1/species/:species', async (c) => {
 	});
 });
 
+app.get('/v2/species', async (c) => {
+	const { limit, offset } = c.req.query();
+});
+
 app.get('/v2/species/:species', async (c) => {
 	const { species } = c.req.param();
 	try {
@@ -138,7 +142,6 @@ app.put('/v2/species/:species/variants/:variant', async (c) => {
 	return c.json(
 		await insertVariant(c, {
 			name: variant === 'default' ? species : `${species}-${variant}`,
-			default: variant === 'default' ? 'Y' : 'N',
 			...body
 		})
 	);

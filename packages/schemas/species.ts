@@ -109,6 +109,7 @@ const pokeApiVariantInfoSchema = object({
   weight: number([integer()]),
   id: number(),
   name: string(),
+  is_default: boolean(),
   sprites: object({
     front_default: nullable(string([url()])),
     other: object({
@@ -141,6 +142,7 @@ export const variantInfoSchema = transform(pokeApiVariantInfoSchema, (input) => 
       }
     }),
     types: input.types.map((typeEntry) => typeEntry.type.name),
+    is_default: input.is_default,
   }
 })
 export type VariantInfo = Output<typeof variantInfoSchema>;

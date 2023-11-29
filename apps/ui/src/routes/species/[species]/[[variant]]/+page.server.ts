@@ -2,7 +2,7 @@ import { POKEDEX_API_HOST } from '$env/static/private';
 import { fetcher } from 'itty-fetcher';
 import type { VariantInfo } from 'schemas/species.js';
 export const load = async (event) => {
-	const { species: speciesData } = await event.parent();
+	// const { species: speciesData } = await event.parent();
 	const api = fetcher({
 		fetch: event.fetch,
 		base: POKEDEX_API_HOST
