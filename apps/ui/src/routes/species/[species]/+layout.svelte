@@ -9,7 +9,7 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
-	import Evolution from './Evolution.svelte';
+	// import Evolution from './Evolution.svelte';
 	import FallbackImage from './FallbackImage.svelte';
 
 	const getVars = (types?: string[]) => {
@@ -143,14 +143,14 @@
 					</WhiteBox>
 				</TypeBox>
 			{/if}
-			<TypeBox>
+			<!-- <TypeBox>
 				<WhiteBox class="space-y-2 p-4">
 					<h3 class="text-center text-xl font-medium capitalize">Evolution (WIP)</h3>
 					<div class="flex justify-center gap-2">
 						<Evolution evolution={data.evolutions.chain} />
 					</div>
 				</WhiteBox>
-			</TypeBox>
+			</TypeBox> -->
 		</div>
 	</div>
 </div>

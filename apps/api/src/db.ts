@@ -70,10 +70,10 @@ export async function insertSpecies(c: Context<{ Bindings: ApiBindings }>, speci
 		species.id,
 		species.name,
 		species.genus,
-		species.habitat,
-		species.color,
-		species.shape,
-		species.flavor_text,
+		species.habitat ?? null,
+		species.color ?? null,
+		species.shape ?? null,
+		species.flavor_text ?? null,
 		species.egg_groups.join(';')
 	);
 	const result = await query.run();
@@ -123,7 +123,7 @@ const variantSchema = transform(
 		weight: number([integer()]),
 		image: string([url()]),
 		type_1: string(),
-		type_2: string(),
+		type_2: nullable(string()),
 		default: union([literal('N'), literal('Y')]),
 		species_id: number([integer()])
 	}),
@@ -141,15 +141,13 @@ export async function getVariant(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species, variant }: { species: string; variant: string }
 ) {
-	let query;
+	let query = c.env.DB.prepare(
+		'select id, name, height, weight, image, type_1, type_2, "default", species_id from variants where name = ?1'
+	);
 	if (variant === 'default') {
-		query = c.env.DB.prepare(
-			'select id, name, height, weight, image, type_1, type_2, "default", species_id from variants where "default" = "Y" and species_id in (select id from species where name = ?1)'
-		).bind(species);
+		query = query.bind(species);
 	} else {
-		query = c.env.DB.prepare(
-			'select id, name, height, weight, image, type_1, type_2, "default", species_id from variants where name = ?1'
-		).bind(`${species}-${variant}`);
+		query = query.bind(`${species}-${variant}`);
 	}
 	const data = await query.first();
 	if (!data) {
@@ -157,13 +155,14 @@ export async function getVariant(
 	}
 	const parseResult = safeParse(variantSchema, data);
 	if (!parseResult.success) {
+		console.log(JSON.stringify(parseResult.issues));
 		throw new StatusError(500, 'invalid data from db');
 	}
 	return parseResult.output;
 }
 
 export async function insertVariant(c: Context<{ Bindings: ApiBindings }>, variant: Variant) {
-	const [type_1, type_2] = variant.types;
+	const [type_1, type_2 = null] = variant.types;
 	const query = c.env.DB.prepare(
 		'insert into variants (id, name, height, weight, image, type_1, type_2, species_id, "default") values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9) on conflict(id) do update set name = ?2, height = ?3, weight = ?4, image=?5, type_1=?6, type_2=?7, species_id=?8, "default" = ?9, species_id=?8 on conflict(name) do update set id=?1, height=?3, weight=?4, image=?5, type_1=?6, type_2=?7, species_id=?8, "default" = ?9'
 	).bind(

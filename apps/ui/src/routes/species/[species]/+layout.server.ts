@@ -3,6 +3,7 @@ import { fetcher } from 'itty-fetcher';
 import type { EvolutionChain, SpeciesInfo } from 'schemas/species.js';
 import type { LayoutServerLoadEvent } from './$types.js';
 import { error } from '@sveltejs/kit';
+import { StatusError } from 'itty-fetcher';
 
 type navItem = {
 	id: number;
@@ -24,10 +25,20 @@ async function getSpeciesData(event: LayoutServerLoadEvent) {
 	});
 
 	try {
-		return api.get<{
+		const data = await api.get<{
 			species: SpeciesInfo;
 			links: { previous: navItem; current: navItem; next: navItem };
 		}>(`/v1/species/${species}`);
+		// await api.put('/v2/species/' + species, {
+		// 	id: data.species.speciesId,
+		// 	habitat: data.species.habitat,
+		// 	genus: data.species.genus,
+		// 	color: data.species.color,
+		// 	shape: data.species.shape,
+		// 	flavor_text: data.species.flavorText.at(0),
+		// 	egg_groups: data.species.eggGroups,
+		// })
+		return data;
 	} catch (e) {
 		if (hasMessage(e)) {
 			throw error(500, e.message);
@@ -55,10 +66,10 @@ async function getEvolutionChainData(event: LayoutServerLoadEvent, { id }: { id:
 
 export const load = async (event) => {
 	const { species, links } = await getSpeciesData(event);
-	const evolutions = await getEvolutionChainData(event, { id: species.evolutionChain });
+	// const evolutions = await getEvolutionChainData(event, { id: species.evolutionChain });
 	return {
 		species,
-		links,
-		evolutions
+		links
+		// evolutions
 	};
 };
