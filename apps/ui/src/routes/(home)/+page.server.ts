@@ -8,9 +8,6 @@ export const load = async (event) => {
 	const getSpeciesResponse = await api.get<{ results: { name: string; id: number }[] }>(
 		'/v1/species'
 	);
-	event.setHeaders({
-		'cache-control': 'public, max-age=3153600'
-	});
 	return {
 		species: getSpeciesResponse.results
 	};

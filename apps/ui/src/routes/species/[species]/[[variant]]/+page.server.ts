@@ -41,9 +41,6 @@ export const load = async (event) => {
 	});
 	let { species, variant = 'default' } = event.params;
 	const variantData = getVariant(api, { species, variant });
-	event.setHeaders({
-		'cache-control': 'public, max-age=3600'
-	});
 	return {
 		variant: variantData
 	};
