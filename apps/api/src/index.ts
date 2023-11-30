@@ -42,13 +42,13 @@ export type ApiBindings = {
 };
 const app = new Hono<{ Bindings: ApiBindings }>();
 
-// app.get(
-// 	'*',
-// 	cache({
-// 		cacheName: 'pokedex',
-// 		cacheControl: 'max-age=3600'
-// 	})
-// );
+app.get(
+	'*',
+	cache({
+		cacheName: 'pokedex',
+		cacheControl: 'max-age=3600'
+	})
+);
 
 app.get('/v1/species', async (c) => {
 	const { limit = pokedexByName.size, offset = 0 } = c.req.query();

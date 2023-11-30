@@ -100,7 +100,7 @@
 					<dl
 						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(2,_max-content_max-content)] @md:grid-cols-[repeat(3,_max-content_minmax(min-content,_1fr))]"
 					>
-						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species.egg_groups.join(', ') }].filter((item) => item.value) as item (item)}
+						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height / 10}m` }, { label: 'weight', value: `${$page.data.variant.weight / 10}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species.egg_groups.join(', ') }].filter((item) => item.value) as item (item)}
 							<dt class="text-sm capitalize">{item.label}:</dt>
 							<dd class="break-normal text-sm font-bold capitalize">{item.value}</dd>
 						{/each}
