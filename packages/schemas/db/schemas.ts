@@ -23,7 +23,13 @@ export const variantSchema = transform(
 );
 export type Variant = Output<typeof variantSchema>;
 
-export const variantListItemSchema = pick(variantSchema, ['id', 'name', 'is_default']);
+export const variantListItemSchema = transform(pick(variantSchema, ['id', 'name', 'is_default']), (input) => {
+	return {
+		id: input.id,
+		name: input.name,
+		is_default: input.is_default === 'Y',
+	}
+});
 export type VariantListItem = Output<typeof variantListItemSchema>;
 
 export const variantsSchema = array(variantListItemSchema);
@@ -34,17 +40,44 @@ export const speciesSchema = transform(
 		name: string(),
 		genus: string(),
 		habitat: nullable(string()),
-		color: string(),
-		shape: string(),
-		flavor_text: string(),
+		color: nullable(string()),
+		shape: nullable(string()),
+		flavor_text: nullable(string()),
 		egg_groups: string()
 	}),
 	(input) => {
 		const { egg_groups, ...rest } = input;
+		const egg_group_list = egg_groups.split(';').filter(Boolean)
 		return {
 			...rest,
-			egg_groups: egg_groups.split(';')
+			egg_groups: egg_group_list.length ? egg_group_list : ['no-eggs'],
 		};
 	}
 );
 export type Species = Output<typeof speciesSchema>;
+
+export const neighborsSchema = transform(object({
+		name: string(),
+		id: number([integer()]),
+		previousName: string(),
+		previousId: number([integer()]),
+		nextName: string(),
+		nextId: number([integer()]),
+	}), (input) => {
+		return {
+			previous: {
+				name: input.previousName,
+				id: input.previousId,
+			},
+			current: {
+				name: input.name,
+				id: input.id,
+			},
+			next: {
+				name: input.nextName,
+				id: input.nextId,
+			}
+		}
+});
+
+export type Neighbors = Output<typeof neighborsSchema>;

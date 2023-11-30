@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
+	import { speciesInfoSchema } from 'schemas/species';
 	// import Evolution from './Evolution.svelte';
 	import FallbackImage from './FallbackImage.svelte';
 
@@ -48,14 +49,14 @@
 		</WhiteBox>
 		<WhiteBox class="hidden sm:grid">
 			<div class="grid w-full items-center px-4 text-center font-mono text-xl font-medium">
-				#{leftPad(4, data.species.pokedexNumber)}
+				#{leftPad(4, data.species.id)}
 			</div>
 		</WhiteBox>
 	</TypeBox>
 
 	<div id="nav-block">
 		<nav class="flex justify-between">
-			{#each [data.links.previous, data.links.next] as navItem, i (navItem)}
+			{#each [data.neighbors.previous, data.neighbors.next] as navItem, i (navItem)}
 				<div class="flex flex items-center gap-2">
 					{#if i === 1}
 						<span>→</span>
@@ -88,12 +89,10 @@
 		<div id="info-block" class="space-y-4">
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
 			<TypeBox class="space-y-2">
-				{#if data.species.flavorText.length}
+				{#if data.species.flavor_text}
 					<WhiteBox class="space-y-2 p-4">
 						<h3 class="text-center text-xl font-medium capitalize">description</h3>
-						{#each data.species.flavorText as flavor (flavor)}
-							<p>{flavor}</p>
-						{/each}
+						<p>{data.species.flavor_text}</p>
 					</WhiteBox>
 				{/if}
 				<WhiteBox class="space-y-2 p-4 @container">
@@ -101,21 +100,21 @@
 					<dl
 						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(2,_max-content_max-content)] @md:grid-cols-[repeat(3,_max-content_minmax(min-content,_1fr))]"
 					>
-						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species?.eggGroups?.join(', ') }].filter((item) => item.value) as item (item)}
+						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height}m` }, { label: 'weight', value: `${$page.data.variant.weight}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species.egg_groups.join(', ') }].filter((item) => item.value) as item (item)}
 							<dt class="text-sm capitalize">{item.label}:</dt>
 							<dd class="break-normal text-sm font-bold capitalize">{item.value}</dd>
 						{/each}
 					</dl>
 				</WhiteBox>
 			</TypeBox>
-			{#if data.species.variants.length && data.species.variants.length > 1}
+			{#if data.variants.length && data.variants.length > 1}
 				<TypeBox class="">
 					<WhiteBox class="space-y-2 p-4">
 						<h3 class="text-center text-xl font-medium capitalize">Variants</h3>
 						<nav class="flex flex-wrap justify-center justify-around gap-2">
-							{#each data.species.variants as variant}
+							{#each data.variants as variant}
 								<a
-									href="/species/{data.species.name}{variant.default
+									href="/species/{data.species.name}{variant.name === data.species.name
 										? ''
 										: '/' + variant.name.replace(data.species.name, '').slice(1)}"
 									class="flex flex-col items-center gap-1 text-center"
@@ -124,14 +123,14 @@
 									<figure class="max-w-[96px] hover:underline">
 										<FallbackImage
 											class="pixelated aspect-square min-h-[96px]"
-											src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{variant.pokemonId}.png"
+											src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{variant.id}.png"
 											alt={variant.name
 												.replace(data.species.name, '')
 												.slice(1)
 												.split('-')
 												.join(' ')}
 											fallback="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{data
-												.species.speciesId}.png"
+												.species.id}.png"
 										/>
 										<figcaption class="text-sm font-medium first-letter:capitalize">
 											{variant.name.replaceAll('-', ' ')}

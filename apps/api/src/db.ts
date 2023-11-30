@@ -89,14 +89,12 @@ export async function getVariant(
 		).bind(`${species}-${variant}`);
 	}
 	const queryResult = await query.all();
-	// console.log(JSON.stringify(queryResult.meta, null, 2));
 	const [data] = queryResult.results;
 	if (!data) {
 		throw new StatusError(404, 'NOT_FOUND');
 	}
 	const parseResult = safeParse(variantSchema, data);
 	if (!parseResult.success) {
-		console.log(JSON.stringify(parseResult.issues));
 		throw new StatusError(500, 'invalid data from db');
 	}
 	return parseResult.output;
@@ -121,6 +119,38 @@ export async function insertVariant(c: Context<{ Bindings: ApiBindings }>, varia
 	const insertResult = await query.run();
 	const [returned] = insertResult.results;
 	const parseResult = safeParse(variantSchema, returned);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'invalid data from db');
+	}
+	return parseResult.output;
+}
+
+import { neighborsSchema } from 'schemas/db/schemas';
+export async function getNeighbors(
+	c: Context<{ Bindings: ApiBindings }>,
+	{ species }: { species: string }
+) {
+	const query = c.env.DB.prepare(
+		`
+	select
+		s.name name,
+		s.id id,
+    	case when s.id = 1
+        	then (select max(id) from species)
+    		else s.id -1 end previousId, 
+    	case when s.id = (select min(id) from species)
+        	then (select name from species order by id desc limit 1)
+        	else (select name from species where id < s.id order by id desc limit 1) end previousName,
+    	case when s.id = (select max(id) from species)
+        	then (select min(id) from species)
+    		else s.id + 1 end nextId, 
+    	case when s.id = (select max(id) from species)
+        	then (select name from species order by id limit 1)
+        	else (select name from species where id = s.id + 1) end nextName
+    from species s where name = ?1`
+	).bind(species);
+	const data = await query.first();
+	const parseResult = safeParse(neighborsSchema, data);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'invalid data from db');
 	}

@@ -1,24 +1,22 @@
 import { Context, Hono } from 'hono';
 import { cache } from 'hono/cache';
-import { fetcher } from 'itty-fetcher';
+import { StatusError, fetcher } from 'itty-fetcher';
 import { safeParse } from 'valibot';
 import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
 import { pokedexById, pokedexByName } from './pokedex';
 import { defaultVariants } from './default-variants';
-import { getSpecies, getVariant, getVariants, insertSpecies, insertVariant } from './db';
+import {
+	getNeighbors,
+	getSpecies,
+	getVariant,
+	getVariants,
+	insertSpecies,
+	insertVariant
+} from './db';
 
 const pokeAPi = fetcher({
 	base: 'https://pokeapi.co/api/v2'
 });
-
-export class StatusError extends Error {
-	status: number;
-
-	constructor(status = 500, message = 'Internal Error.') {
-		super(message);
-		this.status = status;
-	}
-}
 
 function getErrorMessage(c: Context<{ Bindings: ApiBindings }>, { error }: { error: unknown }) {
 	if (error instanceof StatusError) {
@@ -147,10 +145,6 @@ app.get('/v1/evolution-chains/:id', async (c) => {
 	return c.json(parseResult.output);
 });
 
-app.get('/v2/species', async (c) => {
-	const { limit, offset } = c.req.query();
-});
-
 app.get('/v2/species/:species', async (c) => {
 	const { species } = c.req.param();
 	try {
@@ -164,29 +158,58 @@ app.get('/v2/species/:species', async (c) => {
 app.put('/v2/species/:species', async (c) => {
 	const { species } = c.req.param();
 	const body = await c.req.json();
-	const result = await insertSpecies(c, { name: species, ...body });
-	return c.json(result);
+	try {
+		const result = await insertSpecies(c, { name: species, ...body });
+		return c.json(result);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
+});
+
+app.get('/v2/species/:species/neighbors', async (c) => {
+	const { species } = c.req.param();
+	try {
+		const neighbors = await getNeighbors(c, { species });
+		return c.json(neighbors);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
 });
 
 app.get('/v2/species/:species/variants', async (c) => {
 	const { species } = c.req.param();
-	return c.json(await getVariants(c, { species }));
+	try {
+		const variants = await getVariants(c, { species });
+		return c.json({
+			variants
+		});
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
 });
 
 app.get('/v2/species/:species/variants/:variant', async (c) => {
 	const { species, variant } = c.req.param();
-	return c.json(await getVariant(c, { species, variant }));
+	try {
+		const variantData = await getVariant(c, { species, variant });
+		return c.json(variantData);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
 });
 
 app.put('/v2/species/:species/variants/:variant', async (c) => {
 	const { species, variant } = c.req.param();
 	const body = await c.req.json();
-	return c.json(
-		await insertVariant(c, {
+	try {
+		const result = await insertVariant(c, {
 			name: variant === 'default' ? species : `${species}-${variant}`,
 			...body
-		})
-	);
+		});
+		return c.json(result);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
 });
 
 export default app;
