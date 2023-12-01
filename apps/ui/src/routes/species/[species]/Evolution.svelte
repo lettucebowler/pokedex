@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Evolution } from 'schemas/species';
+	import type { Evolution } from 'schemas/pokeApi';
 
 	export let evolution: Evolution;
 </script>

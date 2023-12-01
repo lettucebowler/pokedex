@@ -45,6 +45,10 @@ export const pokeApiSpeciesInfoSchema = object({
   evolution_chain: object({
     url: string([url()]),
   }),
+  evolves_from_species: object({
+    name: string(),
+    url: string([url()]),
+  }),
   id: number([integer()]),
   flavor_text_entries: array(object({ flavor_text: string(), language: object({ name: string() })})),
   form_descriptions: array(object({
@@ -95,7 +99,8 @@ export const speciesInfoSchema = transform(pokeApiSpeciesInfoSchema, (input) => 
     shape: input.shape?.name ?? null,
     color: input.color.name,
     eggGroups: input.egg_groups.map((egg_group) => egg_group.name),
-    evolutionChain: Number(input.evolution_chain.url.split('/').at(-2))
+    evolutionChain: Number(input.evolution_chain.url.split('/').at(-2)),
+    evolves_from: Number(input.evolves_from_species.url.split('/').at(-2)),
   }
 })
 export type SpeciesInfo = Output<typeof speciesInfoSchema>;

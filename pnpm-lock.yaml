@@ -104,9 +104,6 @@ importers:
       vite:
         specifier: ^5.0.4
         version: 5.0.4
-      wrangler:
-        specifier: ^3.18.0
-        version: 3.18.0
 
   packages/schemas:
     dependencies:

@@ -2,7 +2,7 @@ import { Context, Hono } from 'hono';
 import { cache } from 'hono/cache';
 import { StatusError, fetcher } from 'itty-fetcher';
 import { safeParse } from 'valibot';
-import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/species';
+import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from 'schemas/pokeApi';
 import { pokedexById, pokedexByName } from './pokedex';
 import { defaultVariants } from './default-variants';
 import {

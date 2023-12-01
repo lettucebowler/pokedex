@@ -1,6 +1,6 @@
 import { POKEDEX_API_HOST } from '$env/static/private';
 import { StatusError, fetcher, type FetcherType } from 'itty-fetcher';
-import type { EvolutionChain, SpeciesInfo } from 'schemas/species.js';
+import type { EvolutionChain, SpeciesInfo } from 'schemas/pokeApi';
 import { error as svelteError } from '@sveltejs/kit';
 import type { Neighbors, Species, VariantListItem } from 'schemas/db/schemas.js';
 

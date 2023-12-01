@@ -1,7 +1,7 @@
 import { POKEDEX_API_HOST } from '$env/static/private';
 import { fetcher, type FetcherType } from 'itty-fetcher';
 import type { Variant } from 'schemas/db/schemas';
-import type { VariantInfo } from 'schemas/species';
+import type { VariantInfo } from 'schemas/pokeApi';
 
 async function getVariant(
 	fetcher: FetcherType,
