@@ -3,7 +3,7 @@ import type { ApiBindings } from '.';
 import { safeParse } from 'valibot';
 import { StatusError } from 'itty-fetcher';
 
-import { speciesSchema } from 'schemas/db/schemas';
+import { evolutionChainSchema, speciesSchema } from 'schemas/db/schemas';
 export async function getSpecies(
 	c: Context<{ Bindings: ApiBindings }>,
 	{ species }: { species: string }
@@ -151,6 +151,24 @@ export async function getNeighbors(
 	).bind(species);
 	const data = await query.first();
 	const parseResult = safeParse(neighborsSchema, data);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'invalid data from db');
+	}
+	return parseResult.output;
+}
+
+export async function getEvolutionChain(
+	c: Context<{ Bindings: ApiBindings }>,
+	{ species }: { species: string }
+) {
+	const query = c.env.DB.prepare(
+		'select e.chain_id, e.species_id, s.name, e.evolves_from from evolutions e inner join species s on s.id = e.species_id where e.chain_id = (select evolution_chain_id from species where name = ?1) order by s.id'
+	).bind(species);
+	const data = await query.all();
+	if (!data.success) {
+		throw new StatusError(500, 'Query failed');
+	}
+	const parseResult = safeParse(evolutionChainSchema, data.results);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'invalid data from db');
 	}

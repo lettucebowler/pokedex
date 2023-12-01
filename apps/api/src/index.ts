@@ -6,6 +6,7 @@ import { evolutionChainInfoSchema, speciesInfoSchema, variantInfoSchema } from '
 import { pokedexById, pokedexByName } from './pokedex';
 import { defaultVariants } from './default-variants';
 import {
+	getEvolutionChain,
 	getNeighbors,
 	getSpecies,
 	getVariant,
@@ -197,6 +198,20 @@ app.get('/v2/species/:species/variants/:variant', async (c) => {
 		return getErrorMessage(c, { error });
 	}
 });
+
+app.get('/v2/species/:species/evolution-chain', async (c) => {
+	const { species } = c.req.param();
+	try {
+		const evolutionData = await getEvolutionChain(c, { species });
+		return c.json(evolutionData);
+	} catch (error) {
+		return getErrorMessage(c, { error });
+	}
+});
+
+// app.post('/v1/evolutions', async (c) => {
+
+// })
 
 // app.put('/v2/species/:species/variants/:variant', async (c) => {
 // 	const { species, variant } = c.req.param();

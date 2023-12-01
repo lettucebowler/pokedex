@@ -1,4 +1,4 @@
-import { Output, array, integer, literal, nullable, number, object, pick, string, transform, union, url } from "valibot";
+import { Input, Output, array, integer, literal, nullable, number, object, pick, string, transform, union, url } from "valibot";
 
 export const variantSchema = transform(
 	object({
@@ -31,7 +31,6 @@ export const variantListItemSchema = transform(pick(variantSchema, ['id', 'name'
 	}
 });
 export type VariantListItem = Output<typeof variantListItemSchema>;
-
 export const variantsSchema = array(variantListItemSchema);
 
 export const speciesSchema = transform(
@@ -79,5 +78,44 @@ export const neighborsSchema = transform(object({
 			}
 		}
 });
-
 export type Neighbors = Output<typeof neighborsSchema>;
+
+export const evolutionSchema = object({
+	chain_id: number([integer()]),
+	species_id: number([integer()]),
+	evolves_from: nullable(number([integer()])),
+	name: string(),
+});
+export type Evolution = Output<typeof evolutionSchema>;
+
+export const evolutionChainSchema = transform(
+	array(evolutionSchema),
+	(input) => {
+		const [basic] = input.filter((evolution) => !evolution.evolves_from);
+		const chain = {
+			species: {
+				id: basic.species_id,
+				name: basic.name,
+			},
+			evolutions: input.filter((stage_1) => stage_1.evolves_from === basic.species_id).map((stage_1) => {
+				return {
+					species: {
+						id: stage_1.species_id,
+						name: stage_1.name,
+					},
+					evolutions: input.filter((stage_2) => stage_2.evolves_from === stage_1.species_id).map((stage_2) => {
+						return {
+							species: {
+								id: stage_2.species_id,
+								name: stage_2.name,
+							},
+							evolutions: [],
+						}
+					})
+				}
+			})
+		};
+		return chain;
+	},
+);
+export type EvolutionChainOutput = Output<typeof evolutionChainSchema>;
