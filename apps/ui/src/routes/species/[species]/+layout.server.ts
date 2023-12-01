@@ -52,6 +52,30 @@ async function getSpecies(fetcher: FetcherType, { species }: { species: string }
 
 async function getEvolutionChain(fetcher: FetcherType, { id }: { id: number }) {
 	try {
+		// const data = await fetcher.get<{
+		// 	species: SpeciesInfo;
+		// 	links: { previous: NavItem; current: NavItem; next: NavItem };
+		// }>(`/v1/species/${species}`);
+		// await fetcher.put('/v2/species/' + species, {
+		// 	id: data.species.speciesId,
+		// 	habitat: data.species.habitat,
+		// 	genus: data.species.genus,
+		// 	color: data.species.color,
+		// 	shape: data.species.shape,
+		// 	flavor_text: data.species.flavorText.at(0),
+		// 	egg_groups: data.species.eggGroups,
+		// });
+		// const returnData: Species = {
+		// 	name: data.species.name,
+		// 	id: data.species.speciesId,
+		// 	genus: data.species.genus,
+		// 	habitat: data.species.habitat,
+		// 	flavor_text: data.species.flavorText.at(0) ?? '',
+		// 	shape: data.species.shape,
+		// 	egg_groups: data.species.eggGroups,
+		// 	color: data.species.color,
+		// }
+		// return returnData;
 		return fetcher.get<EvolutionChain>('/v1/evolution-chains/' + id);
 	} catch (error) {
 		throw getSvelteError({ error });

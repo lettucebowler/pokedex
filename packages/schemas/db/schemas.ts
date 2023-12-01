@@ -42,7 +42,8 @@ export const speciesSchema = transform(
 		color: nullable(string()),
 		shape: nullable(string()),
 		flavor_text: nullable(string()),
-		egg_groups: string()
+		egg_groups: string(),
+		evolution_chain: nullable(number([integer()])),
 	}),
 	(input) => {
 		const { egg_groups, ...rest } = input;

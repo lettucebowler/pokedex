@@ -31,7 +31,7 @@ export async function getSpecies(
 	return parseResult.output;
 }
 
-import type { Species } from 'schemas/db/schemas';
+import type { Evolution, Species } from 'schemas/db/schemas';
 export async function insertSpecies(c: Context<{ Bindings: ApiBindings }>, species: Species) {
 	const query = c.env.DB.prepare(
 		'insert into species (id, name, genus, habitat, color, shape, flavor_text, egg_groups) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) on conflict (name) do update set id = ?1, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8 on conflict (id) do update set name = ?2, genus = ?3, habitat = ?4, color = ?5, shape = ?6, flavor_text = ?7, egg_groups = ?8 returning id, name, genus, habitat, color, shape, flavor_text, egg_groups'
@@ -173,4 +173,13 @@ export async function getEvolutionChain(
 		throw new StatusError(500, 'invalid data from db');
 	}
 	return parseResult.output;
+}
+
+export async function insertEvolution(
+	c: Context<{ Bindings: ApiBindings }>,
+	evolution: Pick<Evolution, "chain_id" | "species_id" | "evolves_from">,
+) {
+	const query = c.env.DB.prepare(
+		'insert into evolutions (chain_id, species_id, evolves_from) values (?1, ?2, ?3) on conflict(chain_id, species_id) do update set evolves_from = ?3 returning chain_id, species_id, evolves_from'
+	).bind(evolution.chain_id, evolution.species_id, evolution.evolves_from);
 }
