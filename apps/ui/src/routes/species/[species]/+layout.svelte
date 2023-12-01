@@ -9,7 +9,6 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
-	import { speciesInfoSchema } from 'schemas/species';
 	// import Evolution from './Evolution.svelte';
 	import FallbackImage from './FallbackImage.svelte';
 
@@ -41,7 +40,7 @@
 				>Lettuce Pokedex</a
 			>
 		</WhiteBox>
-		<WhiteBox class="text-center">
+		<WhiteBox class="py-1 text-center">
 			<h1 class="inline text-2xl font-medium capitalize">{data.species.name}</h1>
 			<p class="text-sm text-gray-800">
 				{data.species.genus}
@@ -98,7 +97,7 @@
 				<WhiteBox class="space-y-2 p-4 @container">
 					<h3 class="text-center text-xl font-medium capitalize">biology</h3>
 					<dl
-						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[repeat(2,_max-content_max-content)] @md:grid-cols-[repeat(3,_max-content_minmax(min-content,_1fr))]"
+						class="mx-auto grid w-fit grid-cols-[max-content_max-content] gap-x-4 gap-y-2 @sm:grid-cols-[max-content_max-content_max-content_max-content] @md:grid-cols-[max-content_minmax(min-content,_1fr)_max-content_minmax(min-content,_1fr)_max-content_minmax(min-content,_1fr)]"
 					>
 						{#each [{ label: 'habitat', value: data.species.habitat }, { label: 'height', value: `${$page.data.variant.height / 10}m` }, { label: 'weight', value: `${$page.data.variant.weight / 10}kg` }, { label: 'color', value: data.species.color }, { label: 'shape', value: data.species.shape }, { label: 'egg groups', value: data.species.egg_groups.join(', ') }].filter((item) => item.value) as item (item)}
 							<dt class="text-sm capitalize">{item.label}:</dt>

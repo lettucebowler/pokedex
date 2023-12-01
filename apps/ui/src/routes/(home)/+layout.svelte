@@ -4,9 +4,9 @@
 </script>
 
 <TypeBox>
-	<WhiteBox>
+	<WhiteBox class="grid h-[3.875rem] items-center">
 		<nav class="flex justify-center gap-2">
-			<a href="/"><span class="text-4xl font-medium">Lettuce Pokedex</span></a>
+			<a href="/" class="text-2xl font-medium">Lettuce Pokedex</a>
 		</nav>
 	</WhiteBox>
 </TypeBox>

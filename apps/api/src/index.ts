@@ -155,16 +155,16 @@ app.get('/v2/species/:species', async (c) => {
 	}
 });
 
-app.put('/v2/species/:species', async (c) => {
-	const { species } = c.req.param();
-	const body = await c.req.json();
-	try {
-		const result = await insertSpecies(c, { name: species, ...body });
-		return c.json(result);
-	} catch (error) {
-		return getErrorMessage(c, { error });
-	}
-});
+// app.put('/v2/species/:species', async (c) => {
+// 	const { species } = c.req.param();
+// 	const body = await c.req.json();
+// 	try {
+// 		const result = await insertSpecies(c, { name: species, ...body });
+// 		return c.json(result);
+// 	} catch (error) {
+// 		return getErrorMessage(c, { error });
+// 	}
+// });
 
 app.get('/v2/species/:species/neighbors', async (c) => {
 	const { species } = c.req.param();
@@ -198,18 +198,18 @@ app.get('/v2/species/:species/variants/:variant', async (c) => {
 	}
 });
 
-app.put('/v2/species/:species/variants/:variant', async (c) => {
-	const { species, variant } = c.req.param();
-	const body = await c.req.json();
-	try {
-		const result = await insertVariant(c, {
-			name: variant === 'default' ? species : `${species}-${variant}`,
-			...body
-		});
-		return c.json(result);
-	} catch (error) {
-		return getErrorMessage(c, { error });
-	}
-});
+// app.put('/v2/species/:species/variants/:variant', async (c) => {
+// 	const { species, variant } = c.req.param();
+// 	const body = await c.req.json();
+// 	try {
+// 		const result = await insertVariant(c, {
+// 			name: variant === 'default' ? species : `${species}-${variant}`,
+// 			...body
+// 		});
+// 		return c.json(result);
+// 	} catch (error) {
+// 		return getErrorMessage(c, { error });
+// 	}
+// });
 
 export default app;

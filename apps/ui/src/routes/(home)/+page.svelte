@@ -12,13 +12,15 @@
 <div class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
 	{#each data.species as species, i (species)}
 		<a href="/species/{species.name}">
-			<figure class="flex flex-col items-center rounded-xl p-1 text-lg font-bold hover:bg-gray-200">
-				<img
-					class="pixelated h-[96px] w-[96px] sm:h-[192px] sm:w-[192px]"
-					src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{species.id}.png"
-					alt={species.name}
-					loading={i < 30 ? 'eager' : 'lazy'}
-				/>
+			<figure class="flex flex-col items-center rounded-xl p-1 text-lg font-bold hover:underline">
+				<div class="h-[88px] overflow-hidden sm:h-[176px]">
+					<img
+						class="pixelated h-24 w-24 sm:h-48 sm:w-48"
+						src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{species.id}.png"
+						alt={species.name}
+						loading={i < 30 ? 'eager' : 'lazy'}
+					/>
+				</div>
 				<figcaption class="text-center capitalize">
 					<div class="text-base font-medium">{species.name}</div>
 					<div class="text-sm text-gray-700">#{i + 1}</div>
