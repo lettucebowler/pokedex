@@ -1,15 +1,16 @@
 <script lang="ts">
-	import type { Evolution } from 'schemas/pokeApi';
+	import type { EvolutionChainOutput } from 'schemas/db/schemas';
+	import SpeciesLink from './SpeciesLink.svelte';
 
-	export let evolution: Evolution;
+	export let evolution: EvolutionChainOutput;
 </script>
 
-<img
-	class="pixelated my-auto aspect-square"
-	src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{evolution.species
-		.id}.png"
-	alt={evolution.species.name}
-/>
+<div class="flex items-center gap-2">
+	{#if evolution.evolves_from}
+		<span>→</span>
+	{/if}
+	<SpeciesLink species={evolution.species.name} id={evolution.species.id} />
+</div>
 {#if evolution.evolutions.length}
 	{#if evolution.evolutions.length > 1}
 		<div class="space-y-2">

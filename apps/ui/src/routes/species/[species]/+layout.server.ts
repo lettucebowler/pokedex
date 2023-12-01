@@ -1,6 +1,6 @@
 import { POKEDEX_API_HOST } from '$env/static/private';
 import { StatusError, fetcher, type FetcherType } from 'itty-fetcher';
-import type { EvolutionChain, SpeciesInfo } from 'schemas/pokeApi';
+import type { Evolution, PokeApiEvolutionChain, SpeciesInfo } from 'schemas/pokeApi';
 import { error as svelteError } from '@sveltejs/kit';
 import type { Neighbors, Species, VariantListItem } from 'schemas/db/schemas.js';
 
@@ -14,12 +14,13 @@ function getSvelteError({ error }: { error: unknown }) {
 	return svelteError(500, String(error));
 }
 
-// type NavItem = {
-// 	name: string;
-// 	id: number;
-// }
+type NavItem = {
+	name: string;
+	id: number;
+};
 async function getSpecies(fetcher: FetcherType, { species }: { species: string }) {
 	try {
+		// console.log('load species data:', species);
 		// const data = await fetcher.get<{
 		// 	species: SpeciesInfo;
 		// 	links: { previous: NavItem; current: NavItem; next: NavItem };
@@ -33,6 +34,11 @@ async function getSpecies(fetcher: FetcherType, { species }: { species: string }
 		// 	flavor_text: data.species.flavorText.at(0),
 		// 	egg_groups: data.species.eggGroups,
 		// });
+		// await fetcher.post('/v2/evolutions', {
+		// 	chain_id: data.species.evolutionChain,
+		// 	species_id: data.species.speciesId,
+		// 	evolves_from: data.species.evolves_from,
+		// })
 		// const returnData: Species = {
 		// 	name: data.species.name,
 		// 	id: data.species.speciesId,
@@ -50,33 +56,33 @@ async function getSpecies(fetcher: FetcherType, { species }: { species: string }
 	}
 }
 
-async function getEvolutionChain(fetcher: FetcherType, { id }: { id: number }) {
+import type { EvolutionChainOutput } from 'schemas/db/schemas.js';
+async function getEvolutionChain(
+	fetcher: FetcherType,
+	{ species }: { species: string }
+): Promise<EvolutionChainOutput> {
 	try {
-		// const data = await fetcher.get<{
+		// const pokeApiSpeciesData = await fetcher.get<{
 		// 	species: SpeciesInfo;
 		// 	links: { previous: NavItem; current: NavItem; next: NavItem };
 		// }>(`/v1/species/${species}`);
-		// await fetcher.put('/v2/species/' + species, {
-		// 	id: data.species.speciesId,
-		// 	habitat: data.species.habitat,
-		// 	genus: data.species.genus,
-		// 	color: data.species.color,
-		// 	shape: data.species.shape,
-		// 	flavor_text: data.species.flavorText.at(0),
-		// 	egg_groups: data.species.eggGroups,
-		// });
-		// const returnData: Species = {
-		// 	name: data.species.name,
-		// 	id: data.species.speciesId,
-		// 	genus: data.species.genus,
-		// 	habitat: data.species.habitat,
-		// 	flavor_text: data.species.flavorText.at(0) ?? '',
-		// 	shape: data.species.shape,
-		// 	egg_groups: data.species.eggGroups,
-		// 	color: data.species.color,
+		// const pokeApiEvolutionChainData = await fetcher.get<PokeApiEvolutionChain>('/v1/evolution-chains/' + pokeApiSpeciesData.species.evolutionChain);
+		// const returnData: EvolutionChainOutput = {
+		// 	species: pokeApiEvolutionChainData.chain.species,
+		// 	evolutions: pokeApiEvolutionChainData.chain.evolutions.map((e) => {
+		// 		return {
+		// 			species: e.species,
+		// 			evolutions: e.evolutions.map((e2) => {
+		// 				return {
+		// 					species: e2.species,
+		// 					evolutions: [],
+		// 				}
+		// 			})
+		// 		}
+		// 	})
 		// }
 		// return returnData;
-		return fetcher.get<EvolutionChain>('/v1/evolution-chains/' + id);
+		return fetcher.get<EvolutionChainOutput>(`/v2/species/${species}/evolution-chain`);
 	} catch (error) {
 		throw getSvelteError({ error });
 	}
@@ -141,10 +147,11 @@ export const load = async (event) => {
 	const variants = getVariants(api, { species });
 	const speciesInfo = getSpecies(api, { species });
 	const neighbors = getNeighbors(api, { species });
-
+	const evolution_chain = getEvolutionChain(api, { species });
 	return {
 		species: speciesInfo,
 		variants,
-		neighbors
+		neighbors,
+		evolution_chain
 	};
 };

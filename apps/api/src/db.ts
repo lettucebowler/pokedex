@@ -162,7 +162,7 @@ export async function getEvolutionChain(
 	{ species }: { species: string }
 ) {
 	const query = c.env.DB.prepare(
-		'select e.chain_id, e.species_id, s.name, e.evolves_from from evolutions e inner join species s on s.id = e.species_id where e.chain_id = (select evolution_chain_id from species where name = ?1) order by s.id'
+		'select e.chain_id, e.species_id, e.evolves_from, s.name from species s inner join evolutions e on e.species_id = s.id where e.chain_id = (select chain_id from evolutions where species_id = (select id from species where name = ?1))'
 	).bind(species);
 	const data = await query.all();
 	if (!data.success) {
@@ -177,9 +177,11 @@ export async function getEvolutionChain(
 
 export async function insertEvolution(
 	c: Context<{ Bindings: ApiBindings }>,
-	evolution: Pick<Evolution, "chain_id" | "species_id" | "evolves_from">,
+	evolution: Pick<Evolution, 'chain_id' | 'species_id' | 'evolves_from'>
 ) {
 	const query = c.env.DB.prepare(
 		'insert into evolutions (chain_id, species_id, evolves_from) values (?1, ?2, ?3) on conflict(chain_id, species_id) do update set evolves_from = ?3 returning chain_id, species_id, evolves_from'
 	).bind(evolution.chain_id, evolution.species_id, evolution.evolves_from);
+	const insertResult = await query.run();
+	return insertResult;
 }

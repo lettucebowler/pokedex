@@ -11,6 +11,7 @@ import {
 	getSpecies,
 	getVariant,
 	getVariants,
+	insertEvolution,
 	insertSpecies,
 	insertVariant
 } from './db';
@@ -209,9 +210,11 @@ app.get('/v2/species/:species/evolution-chain', async (c) => {
 	}
 });
 
-// app.post('/v1/evolutions', async (c) => {
-
-// })
+// app.post('/v2/evolutions', async (c) => {
+// 	const body = await c.req.json();
+// 	const result = await insertEvolution(c, { ...body });
+// 	return c.json(result);
+// });
 
 // app.put('/v2/species/:species/variants/:variant', async (c) => {
 // 	const { species, variant } = c.req.param();

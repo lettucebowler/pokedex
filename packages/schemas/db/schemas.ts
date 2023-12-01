@@ -43,7 +43,6 @@ export const speciesSchema = transform(
 		shape: nullable(string()),
 		flavor_text: nullable(string()),
 		egg_groups: string(),
-		evolution_chain: nullable(number([integer()])),
 	}),
 	(input) => {
 		const { egg_groups, ...rest } = input;
@@ -98,18 +97,21 @@ export const evolutionChainSchema = transform(
 				id: basic.species_id,
 				name: basic.name,
 			},
+			evolves_from: basic.evolves_from,
 			evolutions: input.filter((stage_1) => stage_1.evolves_from === basic.species_id).map((stage_1) => {
 				return {
 					species: {
 						id: stage_1.species_id,
 						name: stage_1.name,
 					},
+					evolves_from: stage_1.evolves_from,
 					evolutions: input.filter((stage_2) => stage_2.evolves_from === stage_1.species_id).map((stage_2) => {
 						return {
 							species: {
 								id: stage_2.species_id,
 								name: stage_2.name,
 							},
+							evolves_from: stage_2.evolves_from,
 							evolutions: [],
 						}
 					})

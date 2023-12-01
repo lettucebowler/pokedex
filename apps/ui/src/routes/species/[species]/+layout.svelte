@@ -9,8 +9,10 @@
 	import { page } from '$app/stores';
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
+	import Evolution from './Evolution.svelte';
 	// import Evolution from './Evolution.svelte';
 	import FallbackImage from './FallbackImage.svelte';
+	import SpeciesLink from './SpeciesLink.svelte';
 
 	const getVars = (types?: string[]) => {
 		if (!types) {
@@ -60,21 +62,7 @@
 					{#if i === 1}
 						<span>→</span>
 					{/if}
-					<a
-						href="/species/{navItem.name}"
-						class="flex items-center justify-between rounded-lg p-1 text-center hover:underline before:hover:no-underline hover:after:no-underline"
-					>
-						<figure class="flex w-32 flex-col items-center">
-							<img
-								alt={navItem.name}
-								src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{navItem.id}.png"
-								class="aspect-square h-12 w-12"
-							/>
-							<figcaption class="text-lg font-medium first-letter:capitalize">
-								{navItem.name}
-							</figcaption>
-						</figure>
-					</a>
+					<SpeciesLink species={navItem.name} id={navItem.id} />
 					{#if i === 0}
 						<span>←</span>
 					{/if}
@@ -141,14 +129,16 @@
 					</WhiteBox>
 				</TypeBox>
 			{/if}
-			<!-- <TypeBox>
-				<WhiteBox class="space-y-2 p-4">
-					<h3 class="text-center text-xl font-medium capitalize">Evolution (WIP)</h3>
-					<div class="flex justify-center gap-2">
-						<Evolution evolution={data.evolutions.chain} />
-					</div>
-				</WhiteBox>
-			</TypeBox> -->
+			{#if data.evolution_chain.evolutions.length}
+				<TypeBox>
+					<WhiteBox class="space-y-2 p-4">
+						<h3 class="text-center text-xl font-medium capitalize">Evolution</h3>
+						<div class="flex justify-center gap-2">
+							<Evolution evolution={data.evolution_chain} />
+						</div>
+					</WhiteBox>
+				</TypeBox>
+			{/if}
 		</div>
 	</div>
 </div>
