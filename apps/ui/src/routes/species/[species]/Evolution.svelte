@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { EvolutionChainOutput } from 'schemas/db/schemas';
-	import SpeciesLink from './SpeciesLink.svelte';
+	import SpeciesLink from '$lib/components/SpeciesLink.svelte';
 
 	export let evolution: EvolutionChainOutput;
 </script>

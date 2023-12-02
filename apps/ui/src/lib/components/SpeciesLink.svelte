@@ -7,9 +7,9 @@
 
 <a
 	href="/species/{species}{variant === species ? '' : '/' + variant.replace(species, '').slice(1)}"
-	class="flex items-center justify-between rounded-lg p-1 text-center hover:underline before:hover:no-underline hover:after:no-underline"
+	class="mx-auto flex items-center justify-between rounded-lg p-1 text-center hover:underline"
 >
-	<figure class="flex w-32 flex-col items-center">
+	<figure class="flex flex-col items-center">
 		<img
 			alt={species}
 			src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
@@ -17,7 +17,7 @@
 			class:pixelated
 		/>
 		<figcaption class="text-lg font-medium first-letter:capitalize">
-			{species}
+			{variant ? variant.split('-').join(' ') : species}
 		</figcaption>
 	</figure>
 </a>

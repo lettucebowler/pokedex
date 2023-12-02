@@ -6,6 +6,14 @@
 	.pixelated {
 		image-rendering: pixelated;
 	}
+
+	.size-sm {
+		--size: 6rem;
+	}
+
+	.size-lg {
+		--size: 12rem;
+	}
 }
 
 :root {

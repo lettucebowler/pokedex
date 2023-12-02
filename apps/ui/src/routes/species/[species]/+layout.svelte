@@ -10,9 +10,7 @@
 	import TypeBox from '$lib/components/TypeBox.svelte';
 	import WhiteBox from '$lib/components/WhiteBox.svelte';
 	import Evolution from './Evolution.svelte';
-	// import Evolution from './Evolution.svelte';
-	import FallbackImage from './FallbackImage.svelte';
-	import SpeciesLink from './SpeciesLink.svelte';
+	import SpeciesLink from '$lib/components/SpeciesLink.svelte';
 
 	const getVars = (types?: string[]) => {
 		if (!types) {
@@ -98,7 +96,7 @@
 				<TypeBox class="">
 					<WhiteBox class="space-y-2 p-4">
 						<h3 class="text-center text-xl font-medium capitalize">Variants</h3>
-						<nav class="flex flex-wrap justify-center justify-around gap-2">
+						<nav class="flex flex-wrap items-start justify-center justify-around gap-2">
 							{#each data.variants as variant}
 								<SpeciesLink species={data.species.name} id={variant.id} variant={variant.name} />
 							{/each}
