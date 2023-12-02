@@ -2,6 +2,7 @@
 	export let species: string;
 	export let id: number;
 	export let variant = species;
+	export let pixelated = false;
 </script>
 
 <a
@@ -12,7 +13,8 @@
 		<img
 			alt={species}
 			src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
-			class="aspect-square h-12 w-12"
+			class="aspect-square h-[var(--size,_96px)] w-[var(--size,_96px)]"
+			class:pixelated
 		/>
 		<figcaption class="text-lg font-medium first-letter:capitalize">
 			{species}

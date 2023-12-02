@@ -60,11 +60,11 @@
 			{#each [data.neighbors.previous, data.neighbors.next] as navItem, i (navItem)}
 				<div class="flex flex items-center gap-2">
 					{#if i === 1}
-						<span>→</span>
+						<span class="text-2xl">→</span>
 					{/if}
-					<SpeciesLink species={navItem.name} id={navItem.id} />
+					<SpeciesLink species={navItem.name} id={navItem.id} --size="48px" />
 					{#if i === 0}
-						<span>←</span>
+						<span class="text-2xl">←</span>
 					{/if}
 				</div>
 			{/each}
@@ -100,30 +100,7 @@
 						<h3 class="text-center text-xl font-medium capitalize">Variants</h3>
 						<nav class="flex flex-wrap justify-center justify-around gap-2">
 							{#each data.variants as variant}
-								<a
-									href="/species/{data.species.name}{variant.name === data.species.name
-										? ''
-										: '/' + variant.name.replace(data.species.name, '').slice(1)}"
-									class="flex flex-col items-center gap-1 text-center"
-									data-sveltekit-noscroll
-								>
-									<figure class="max-w-[96px] hover:underline">
-										<FallbackImage
-											class="pixelated aspect-square min-h-[96px]"
-											src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{variant.id}.png"
-											alt={variant.name
-												.replace(data.species.name, '')
-												.slice(1)
-												.split('-')
-												.join(' ')}
-											fallback="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{data
-												.species.id}.png"
-										/>
-										<figcaption class="text-sm font-medium first-letter:capitalize">
-											{variant.name.replaceAll('-', ' ')}
-										</figcaption>
-									</figure>
-								</a>
+								<SpeciesLink species={data.species.name} id={variant.id} variant={variant.name} />
 							{/each}
 						</nav>
 					</WhiteBox>

@@ -7,7 +7,7 @@
 
 <div class="flex items-center gap-2">
 	{#if evolution.evolves_from}
-		<span>→</span>
+		<span class="text-2xl">→</span>
 	{/if}
 	<SpeciesLink species={evolution.species.name} id={evolution.species.id} />
 </div>
