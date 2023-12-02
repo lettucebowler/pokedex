@@ -69,7 +69,7 @@
 		</nav>
 	</div>
 
-	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[max-content,_1fr]">
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-[max-content,_1fr]">
 		<slot />
 		<div id="info-block" class="space-y-4">
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>
