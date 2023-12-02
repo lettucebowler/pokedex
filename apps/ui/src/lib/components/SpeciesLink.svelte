@@ -7,7 +7,7 @@
 
 <a
 	href="/species/{species}{!variant ? '' : '/' + variant.replace(species, '').slice(1)}"
-	class="mx-auto flex items-center justify-between rounded-lg p-1 text-center hover:underline"
+	class="flex items-center justify-center rounded-lg p-1 text-center hover:underline"
 >
 	<figure class="flex flex-col items-center">
 		<img

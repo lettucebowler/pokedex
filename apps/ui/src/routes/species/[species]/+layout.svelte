@@ -32,11 +32,9 @@
 </script>
 
 <div style={getVars($page.data?.variant?.types)} class="grid gap-4">
-	<TypeBox class="grid grid-cols-[1fr_2fr] gap-2 sm:grid-cols-[max-content_1fr_max-content]">
-		<WhiteBox class="flex-1">
-			<a
-				href="/"
-				class="grid h-full flex-1 items-center rounded-lg bg-white p-1 px-4 text-center text-xl font-medium capitalize"
+	<TypeBox class="grid grid-cols-[1fr_2fr] gap-2 md:grid-cols-[220px_1fr_220px]">
+		<WhiteBox>
+			<a href="/" class="grid h-full items-center text-center text-xl font-medium capitalize"
 				>Lettuce Pokedex</a
 			>
 		</WhiteBox>
@@ -46,21 +44,23 @@
 				{data.species.genus}
 			</p>
 		</WhiteBox>
-		<WhiteBox class="hidden sm:grid">
-			<div class="grid w-full items-center px-4 text-center font-mono text-xl font-medium">
+		<WhiteBox class="hidden md:grid">
+			<div class="grid h-full items-center text-center font-mono text-xl font-medium capitalize">
 				#{leftPad(4, data.species.id)}
 			</div>
 		</WhiteBox>
 	</TypeBox>
 
 	<div id="nav-block">
-		<nav class="flex justify-between">
+		<nav class="flex justify-center gap-12">
 			{#each [data.neighbors.previous, data.neighbors.next] as navItem, i (navItem)}
-				<div class="flex flex items-center gap-2">
+				<div class="flex flex w-28 items-center justify-between gap-2 sm:w-40">
 					{#if i === 1}
 						<span class="text-2xl">→</span>
 					{/if}
-					<SpeciesLink species={navItem.name} id={navItem.id} --size="3rem" />
+					<div class="flex flex-1 justify-center">
+						<SpeciesLink species={navItem.name} id={navItem.id} --size="3rem" />
+					</div>
 					{#if i === 0}
 						<span class="text-2xl">←</span>
 					{/if}
@@ -69,7 +69,7 @@
 		</nav>
 	</div>
 
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-[max-content,_1fr]">
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[max-content,_1fr]">
 		<slot />
 		<div id="info-block" class="space-y-4">
 			<h2 class="text-center text-2xl font-medium">Species Info</h2>

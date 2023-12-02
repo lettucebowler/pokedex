@@ -11,13 +11,13 @@
 <svelte:head>
 	<title>{capitalize(data.variant.name || 'Lettuce Pokedex')}</title>
 </svelte:head>
-<div class="mb-auto">
+<div class="mx-auto mb-auto">
 	<TypeBox>
 		<WhiteBox class="p-1">
 			<img
 				src={data.variant.image}
 				alt={data.variant.name}
-				class="aspect-square w-full sm:w-[320px] md:w-[400px] lg:w-[475px]"
+				class="aspect-square w-full lg:w-[475px]"
 			/>
 			<div class="flex">
 				{#each data.variant.types as type, i (type)}
