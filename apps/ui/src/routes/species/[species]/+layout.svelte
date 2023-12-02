@@ -60,7 +60,7 @@
 					{#if i === 1}
 						<span class="text-2xl">→</span>
 					{/if}
-					<SpeciesLink species={navItem.name} id={navItem.id} --size="48px" />
+					<SpeciesLink species={navItem.name} id={navItem.id} --size="3rem" />
 					{#if i === 0}
 						<span class="text-2xl">←</span>
 					{/if}
