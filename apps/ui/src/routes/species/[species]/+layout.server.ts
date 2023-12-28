@@ -1,18 +1,18 @@
 import { POKEDEX_API_HOST } from '$env/static/private';
 import { StatusError, fetcher, type FetcherType } from 'itty-fetcher';
 import type { Evolution, PokeApiEvolutionChain, SpeciesInfo } from 'schemas/pokeApi';
-import { error as svelteError } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { Neighbors, Species, VariantListItem } from 'schemas/db/schemas.js';
 
-function getSvelteError({ error }: { error: unknown }) {
-	if (error instanceof StatusError) {
-		return svelteError(error.status ?? 500, error.message);
-	}
-	if (error instanceof Error) {
-		return svelteError(500, error.message);
-	}
-	return svelteError(500, String(error));
-}
+// function getSvelteError({ error }: { error: unknown }) {
+// 	if (error instanceof StatusError) {
+// 		svelteError(error.status ?? 500, error.message);
+// 	}
+// 	if (error instanceof Error) {
+// 		svelteError(500, error.message);
+// 	}
+// 	svelteError(500, String(error));
+// }
 
 type NavItem = {
 	name: string;
@@ -51,16 +51,14 @@ async function getSpecies(fetcher: FetcherType, { species }: { species: string }
 		// }
 		// return returnData;
 		return fetcher.get<Species>(`/v2/species/${species}`);
-	} catch (error) {
-		throw getSvelteError({ error });
+	} catch (e) {
+		console.log('e', e);
+		error(500, 'shit');
 	}
 }
 
 import type { EvolutionChainOutput } from 'schemas/db/schemas.js';
-async function getEvolutionChain(
-	fetcher: FetcherType,
-	{ species }: { species: string }
-): Promise<EvolutionChainOutput> {
+async function getEvolutionChain(fetcher: FetcherType, { species }: { species: string }) {
 	try {
 		// const pokeApiSpeciesData = await fetcher.get<{
 		// 	species: SpeciesInfo;
@@ -83,8 +81,10 @@ async function getEvolutionChain(
 		// }
 		// return returnData;
 		return fetcher.get<EvolutionChainOutput>(`/v2/species/${species}/evolution-chain`);
-	} catch (error) {
-		throw getSvelteError({ error });
+	} catch (e) {
+		console.log('e', e);
+
+		error(500, 'shit');
 	}
 }
 
@@ -110,8 +110,10 @@ async function getNeighbors(fetcher: FetcherType, { species }: { species: string
 		// }
 		// return returnData;
 		return fetcher.get<Neighbors>(`/v2/species/${species}/neighbors`);
-	} catch (error) {
-		throw getSvelteError({ error });
+	} catch (e) {
+		console.log('e', e);
+
+		error(500, 'shit');
 	}
 }
 
@@ -133,8 +135,10 @@ async function getVariants(fetcher: FetcherType, { species }: { species: string 
 			`/v2/species/${species}/variants`
 		);
 		return variants;
-	} catch (error) {
-		throw getSvelteError({ error });
+	} catch (e) {
+		console.log('e', e);
+
+		error(500, 'shit');
 	}
 }
 
@@ -149,9 +153,9 @@ export const load = async (event) => {
 	const neighbors = getNeighbors(api, { species });
 	const evolution_chain = getEvolutionChain(api, { species });
 	return {
-		species: speciesInfo,
-		variants,
-		neighbors,
-		evolution_chain
+		species: await speciesInfo,
+		variants: await variants,
+		neighbors: await neighbors,
+		evolution_chain: await evolution_chain
 	};
 };

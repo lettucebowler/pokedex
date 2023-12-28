@@ -40,7 +40,7 @@ export const load = async (event) => {
 		base: POKEDEX_API_HOST
 	});
 	let { species, variant = 'default' } = event.params;
-	const variantData = getVariant(api, { species, variant });
+	const variantData = await getVariant(api, { species, variant });
 	return {
 		variant: variantData
 	};
