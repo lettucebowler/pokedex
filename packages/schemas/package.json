@@ -5,13 +5,15 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"upgrade": "ncu -u"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.10.6",
+    "npm-check-updates": "^16.14.12",
     "valibot": "^0.25.0"
   },
   "dependencies": {
